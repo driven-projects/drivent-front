@@ -11,7 +11,7 @@ export default function useGetTicket() {
     loading: ticketsLoading,
     error: ticketsError,
     act: getTickets,
-  } = useAsync(() => ticketApi.get(token, 1));
+  } = useAsync(() => ticketApi.get(token));
 
   return {
     tickets,

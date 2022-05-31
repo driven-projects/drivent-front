@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 import useGetTicket from '../../hooks/api/useTicket';
+import HotelOptions from './HotelOptions';
+import TicketOptions from './TicketOptions';
 
 export default function TicketChoice() {
   //   const {tickets, ticketsLoading, ticketsError} = useGetTicket();
@@ -14,31 +16,37 @@ export default function TicketChoice() {
   //   });
 
   const tickets = [
-    {id: 1, name: 'Presencial', price: '250'},
-    {id: 2, name: 'Online', price: '100'},
+    {id: 1, name: 'Presencial', price: '250', hotelPrice: 350},
+    {id: 2, name: 'Online', price: '100', hotelPrice: 0},
   ];
-
+  const [userTicket, setUserTicket] = useState(null);
+  const [hotelPrice, setHotelPrice] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
+  console.log(hotelPrice);
   return (
-    <>
-      <OptionsContainer>
-        {tickets.map((ticket) => (
-          <Box id={ticket.id}>
-            <OptionTitle>{ticket.name}</OptionTitle>
-            <OptionPrice>R${ticket.price}</OptionPrice>
-          </Box>
-        ))}
-      </OptionsContainer>
-    </>
+    <Container>
+      <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} />
+      {userTicket === null ? (
+        <></>
+      ) : (
+        <HotelOptions tickets={tickets} hotelPrice={hotelPrice} setHotelPrice={setHotelPrice} userTicket={userTicket} />
+      )}
+    </Container>
   );
 }
 
-const OptionsContainer = styled.div`
+const Container = styled.main`
+  display: flex;
+  flex-direction: column;
+  row-gap: 44px;
+`;
+export const OptionsContainer = styled.div`
   display: flex;
   height: 145px;
   gap: 24px;
 `;
 
-const Box = styled.div`
+export const Box = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,9 +55,14 @@ const Box = styled.div`
   width: 145px;
   border-radius: 20px;
   border: 1px solid #cecece;
+  ${(props) => (props.active ? 'background-color:#FFEED2;' : '')};
+
+  &:hover {
+    background-color: #ccc;
+  }
 `;
 
-const OptionTitle = styled.span`
+export const OptionTitle = styled.span`
   font-size: 19px;
   weight: 400;
   line-height: 18.75px;
@@ -57,7 +70,7 @@ const OptionTitle = styled.span`
   text-align: center;
 `;
 
-const OptionPrice = styled.span`
+export const OptionPrice = styled.span`
   font-size: 16px;
   weight: 400;
   line-height: 16.41px;
