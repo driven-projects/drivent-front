@@ -1,8 +1,10 @@
 /*eslint-disable*/
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import useEnrollment from '../../hooks/api/useEnrollment';
 
 import useGetTicket from '../../hooks/api/useTicket';
+import MissingStep from '../MissingStep';
 import HotelOptions from './HotelOptions';
 import TicketOptions from './TicketOptions';
 
@@ -20,18 +22,29 @@ export default function TicketChoice() {
     {id: 2, name: 'Online', price: '100', hotelPrice: 0},
   ];
   const [userTicket, setUserTicket] = useState(null);
-  const [hotelPrice, setHotelPrice] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  console.log(hotelPrice);
+  const {enrollment} = useEnrollment();
+
   return (
-    <Container>
-      <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} />
-      {userTicket === null ? (
-        <></>
+    <>
+      {enrollment ? (
+        <Container>
+          <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} />
+          {userTicket === null ? (
+            <></>
+          ) : (
+            <HotelOptions
+              tickets={tickets}
+              totalPrice={totalPrice}
+              setTotalPrice={setTotalPrice}
+              userTicket={userTicket}
+            />
+          )}
+        </Container>
       ) : (
-        <HotelOptions tickets={tickets} hotelPrice={hotelPrice} setHotelPrice={setHotelPrice} userTicket={userTicket} />
+        <MissingStep message={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'} />
       )}
-    </Container>
+    </>
   );
 }
 
@@ -76,4 +89,11 @@ export const OptionPrice = styled.span`
   line-height: 16.41px;
   color: #898989;
   text-align: center;
+`;
+
+export const Button = styled.button`
+  height: 37px;
+  width: 162px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
 `;
