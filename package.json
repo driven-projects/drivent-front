@@ -10,6 +10,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
+    "cypress": "^9.7.0",
     "date-fns": "^2.23.0",
     "dayjs": "^1.10.6",
     "file-saver": "^2.0.5",
@@ -132,6 +133,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-plugin-cypress": "^2.12.1",
     "git-commit-msg-linter": "^3.2.8",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2"

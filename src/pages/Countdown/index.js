@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +27,7 @@ export default function Countdown() {
   if (loadingEventInfo) {
     return 'Loading...';
   }
-
+  console.log(eventInfo);
   return (
     <Page background={eventInfo.backgroundImageUrl}>
       <div>Faltam</div>
