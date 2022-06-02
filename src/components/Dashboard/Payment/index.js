@@ -15,7 +15,7 @@ export default function PaymentPage() {
   const { paymentInfo, handleChange } = usePayment();
   const { loadingTicketReservation, reserveTicket } = useTicket();
 
-  const [confirm, setConfirm] = useState(false);
+  const [isReservationReady, setIsReservationReady] = useState(false);
 
   function renderSummary() {
     if (paymentInfo.type === 'online' || (paymentInfo.type === 'presential' && paymentInfo.hotel !== null))
@@ -25,7 +25,7 @@ export default function PaymentPage() {
             Fechado! O total ficou em R$ {paymentInfo.type === 'online' ? '100,00' : paymentInfo.hotel ? '600' : '250'}.
             Agora é só confirmar:
           </StyledTypography>
-          <Button onClick={(e) => handleSubmit(e)}>Reservar ingresso</Button>
+          <Button onClick={() => setIsReservationReady(true)}>Reservar ingresso</Button>
         </Box>
       );
   }
@@ -39,7 +39,7 @@ export default function PaymentPage() {
     }
   }
 
-  if (confirm) return 'efetuar pagamento';
+  if(isReservationReady) return 'pagamento'
   return (
     <>
       <Box marginBottom="44px">
