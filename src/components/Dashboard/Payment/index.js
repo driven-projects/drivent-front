@@ -1,28 +1,45 @@
 /* eslint-disable no-console */
+import { useState } from 'react';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core';
 import OptionButton from './Option';
 import useToken from '../../../hooks/useToken';
 import usePayment from '../../../hooks/usePayment';
-import useTicket from '../../../hooks/api/useTicket'
+import useTicket from '../../../hooks/api/useTicket';
 import Button from '../../Form/Button';
 import { toast } from 'react-toastify';
 
 export default function PaymentPage() {
-  const  { token } = useToken();
+  const { token } = useToken();
   const { paymentInfo, handleChange } = usePayment();
   const { loadingTicketReservation, reserveTicket } = useTicket();
+
+  const [confirm, setConfirm] = useState(false);
+
+  function renderSummary() {
+    if (paymentInfo.type === 'online' || (paymentInfo.type === 'presential' && paymentInfo.hotel !== null))
+      return (
+        <Box>
+          <StyledTypography variant="h6" color="textSecondary">
+            Fechado! O total ficou em R$ {paymentInfo.type === 'online' ? '100,00' : paymentInfo.hotel ? '600' : '250'}.
+            Agora é só confirmar:
+          </StyledTypography>
+          <Button onClick={(e) => handleSubmit(e)}>Reservar ingresso</Button>
+        </Box>
+      );
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       await reserveTicket(paymentInfo, token);
     } catch (error) {
-      toast('Não foi possível reservar o ingresso!')
+      toast('Não foi possível reservar o ingresso!');
     }
   }
 
+  if (confirm) return 'efetuar pagamento';
   return (
     <>
       <Box marginBottom="44px">
@@ -51,16 +68,36 @@ export default function PaymentPage() {
           />
         </ButtonContainer>
       </Box>
-      {paymentInfo.type ? (
-        <Box>
-          <StyledTypography variant="h6" color="textSecondary">
-            Fechado! O total ficou em R$ {paymentInfo.type === 'online' ? '100,00' : '250,00'}. Agora é só confirmar:
-          </StyledTypography>
-          <Button onClick={(e) => handleSubmit(e)}>Reservar ingresso</Button>
-        </Box>
-      ) : (
+      {paymentInfo.type === 'online' ? (
         ''
+      ) : (
+        <Box marginBottom="44px">
+          <StyledTypography variant="h6" color="textSecondary">
+            Ótimo! Agora escolha sua modalidade de hospedagem
+          </StyledTypography>
+          <ButtonContainer>
+            <OptionButton
+              title={'com hotel'}
+              body={'+ R$ 0'}
+              value="presential"
+              isSelected={paymentInfo.hotel === false}
+              onClick={(e) => {
+                handleChange('hotel', false);
+              }}
+            />
+            <OptionButton
+              title={'com hotel'}
+              body={'+ R$ 350'}
+              value="online"
+              isSelected={paymentInfo.hotel === true}
+              onClick={(e) => {
+                handleChange('hotel', true);
+              }}
+            />
+          </ButtonContainer>
+        </Box>
       )}
+      {renderSummary()}
     </>
   );
 }
