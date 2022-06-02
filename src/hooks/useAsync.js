@@ -5,7 +5,7 @@ export default function useAsync(handler, immediate = true) {
   const [loading, setLoading] = useState(immediate);
   const [error, setError] = useState(null);
 
-  const act = async(...args) => {
+  const act = async (...args) => {
     setLoading(true);
     setError(null);
 
@@ -26,13 +26,12 @@ export default function useAsync(handler, immediate = true) {
       act();
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
     data,
     loading,
     error,
-    act
+    act,
   };
 }
