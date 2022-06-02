@@ -27,7 +27,7 @@ export function PaymentProvider({ children }) {
 }
 
 function validateKeyValuePair(key, value) {
-  if (key === 'type' && value !== 'in person' && value !== 'online') {
+  if (key === 'type' && value !== 'presential' && value !== 'online') {
     return false;
   } else if (key === 'hotel' && value !== 'with' && value !== 'without') {
     return false;
