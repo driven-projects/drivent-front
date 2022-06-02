@@ -9,6 +9,7 @@ import usePayment from '../../../hooks/usePayment';
 import useTicket from '../../../hooks/api/useTicket';
 import Button from '../../Form/Button';
 import { toast } from 'react-toastify';
+import PaymentForm from './PaymentForm';
 
 export default function PaymentPage() {
   const { token } = useToken();
@@ -39,7 +40,7 @@ export default function PaymentPage() {
     }
   }
 
-  if(isReservationReady) return 'pagamento'
+  if (isReservationReady) return <PaymentForm />;
   return (
     <>
       <Box marginBottom="44px">
@@ -77,7 +78,7 @@ export default function PaymentPage() {
           </StyledTypography>
           <ButtonContainer>
             <OptionButton
-              title={'com hotel'}
+              title={'Sem hotel'}
               body={'+ R$ 0'}
               value="presential"
               isSelected={paymentInfo.hotel === false}
@@ -86,7 +87,7 @@ export default function PaymentPage() {
               }}
             />
             <OptionButton
-              title={'com hotel'}
+              title={'Com hotel'}
               body={'+ R$ 350'}
               value="online"
               isSelected={paymentInfo.hotel === true}
