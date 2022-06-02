@@ -15,9 +15,15 @@ export function PaymentProvider({ children }) {
     if (!isValid) {
       return;
     }
+
     if (paymentInfo[key] === value) {
       return setPaymentInfo({ ...paymentInfo, [key]: null });
     }
+
+    if(key === 'type' && value === 'online') {
+      return setPaymentInfo({...paymentInfo, [key]: value, hotel: null}) 
+    }
+
     setPaymentInfo({ ...paymentInfo, [key]: value });
   }
 
@@ -29,7 +35,7 @@ export function PaymentProvider({ children }) {
 function validateKeyValuePair(key, value) {
   if (key === 'type' && value !== 'presential' && value !== 'online') {
     return false;
-  } else if (key === 'hotel' && value !== 'with' && value !== 'without') {
+  } else if (key === 'hotel' && value !== true && value !== false) {
     return false;
   }
   return true;
