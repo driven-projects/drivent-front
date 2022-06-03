@@ -12,31 +12,21 @@ import { toast } from 'react-toastify';
 import PaymentForm from './PaymentForm';
 
 export default function PaymentPage() {
-  const { token } = useToken();
-  const { paymentInfo, handleChange } = usePayment();
+  const { paymentInfo, handleChange, ticketPrice } = usePayment();
   const { loadingTicketReservation, reserveTicket } = useTicket();
 
   const [isReservationReady, setIsReservationReady] = useState(false);
 
   function renderSummary() {
-    if (paymentInfo.type === 'online' || (paymentInfo.type === 'presential' && paymentInfo.hotel !== null))
+    if (paymentInfo.type === 'online' || (paymentInfo.type === 'presential' && paymentInfo.hotel !== null)) {
       return (
         <Box>
           <StyledTypography variant="h6" color="textSecondary">
-            Fechado! O total ficou em R$ {paymentInfo.type === 'online' ? '100,00' : paymentInfo.hotel ? '600' : '250'}.
-            Agora é só confirmar:
+            Fechado! O total ficou em R$ {ticketPrice}. Agora é só confirmar:
           </StyledTypography>
           <Button onClick={() => setIsReservationReady(true)}>Reservar ingresso</Button>
         </Box>
       );
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    try {
-      await reserveTicket(paymentInfo, token);
-    } catch (error) {
-      toast('Não foi possível reservar o ingresso!');
     }
   }
 

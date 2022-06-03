@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export default function OptionButton({ title, body, isSelected, onClick, ...props }) {
   return (
-    <StyledButton props onClick={onClick} isSelected={isSelected}>
+    <StyledButton onClick={onClick} isSelected={isSelected}>
       <StyledBox>
         <Typography variant="body1">{title}</Typography>
         <Typography variant="body2" color="textSecondary">
