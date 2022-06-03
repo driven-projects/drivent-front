@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
-export default function OptionButton({ title, body, isSelected, onClick }) {
+export default function OptionButton({ title, body, isSelected, onClick, ...props }) {
   return (
     <StyledButton onClick={onClick} isSelected={isSelected}>
       <StyledBox>

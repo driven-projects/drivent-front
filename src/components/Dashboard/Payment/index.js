@@ -9,37 +9,28 @@ import usePayment from '../../../hooks/usePayment';
 import useTicket from '../../../hooks/api/useTicket';
 import Button from '../../Form/Button';
 import { toast } from 'react-toastify';
+import PaymentForm from './PaymentForm';
 
 export default function PaymentPage() {
-  const { token } = useToken();
-  const { paymentInfo, handleChange } = usePayment();
+  const { paymentInfo, handleChange, ticketPrice } = usePayment();
   const { loadingTicketReservation, reserveTicket } = useTicket();
 
   const [isReservationReady, setIsReservationReady] = useState(false);
 
   function renderSummary() {
-    if (paymentInfo.type === 'online' || (paymentInfo.type === 'presential' && paymentInfo.hotel !== null))
+    if (paymentInfo.type === 'online' || (paymentInfo.type === 'presential' && paymentInfo.hotel !== null)) {
       return (
         <Box>
           <StyledTypography variant="h6" color="textSecondary">
-            Fechado! O total ficou em R$ {paymentInfo.type === 'online' ? '100,00' : paymentInfo.hotel ? '600' : '250'}.
-            Agora é só confirmar:
+            Fechado! O total ficou em R$ {ticketPrice}. Agora é só confirmar:
           </StyledTypography>
           <Button onClick={() => setIsReservationReady(true)}>Reservar ingresso</Button>
         </Box>
       );
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    try {
-      await reserveTicket(paymentInfo, token);
-    } catch (error) {
-      toast('Não foi possível reservar o ingresso!');
     }
   }
 
-  if(isReservationReady) return 'pagamento'
+  if (isReservationReady) return <PaymentForm />;
   return (
     <>
       <Box marginBottom="44px">
@@ -77,7 +68,7 @@ export default function PaymentPage() {
           </StyledTypography>
           <ButtonContainer>
             <OptionButton
-              title={'com hotel'}
+              title={'Sem hotel'}
               body={'+ R$ 0'}
               value="presential"
               isSelected={paymentInfo.hotel === false}
@@ -86,7 +77,7 @@ export default function PaymentPage() {
               }}
             />
             <OptionButton
-              title={'com hotel'}
+              title={'Com hotel'}
               body={'+ R$ 350'}
               value="online"
               isSelected={paymentInfo.hotel === true}
