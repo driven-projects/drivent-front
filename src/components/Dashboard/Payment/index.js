@@ -13,7 +13,6 @@ export default function PaymentPage() {
   const { token } = useToken();
 
   const { enrollment } = useEnrollment();
-  console.log(enrollment);
 
   const [isReservationReady, setIsReservationReady] = useState(false);
 
