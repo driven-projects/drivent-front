@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,11 +27,10 @@ export default function Countdown() {
   if (loadingEventInfo) {
     return 'Loading...';
   }
-
   return (
-    <Page background={eventInfo.backgroundImageUrl}>
+    <Page background={eventInfo?.backgroundImageUrl}>
       <div>Faltam</div>
-      <Timer time={eventInfo.startsAt} onZero={onZero} />
+      <Timer time={eventInfo?.startsAt} onZero={onZero} />
       <div>Para as inscrições</div>
     </Page>
   );
