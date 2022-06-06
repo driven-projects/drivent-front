@@ -6,6 +6,7 @@ import useToken from '../../../hooks/useToken';
 import useEnrollment from '../../../hooks/api/useEnrollment';
 
 import Selection from './Selection';
+import CardForm from './CreditCard';
 
 import { StyledTypography, ButtonContainer } from './style';
 
@@ -26,7 +27,7 @@ export default function PaymentPage() {
           </StyledTypography>
         </Box>
       ) : isReservationReady ? (
-        'pagamento'
+        <CardForm />
       ) : (
         <Selection setIsReservationReady={setIsReservationReady} />
       )}
