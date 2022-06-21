@@ -22,6 +22,7 @@ import { InputWrapper } from './InputWrapper';
 import { ErrorMsg } from './ErrorMsg';
 import { ufList } from './ufList';
 import FormValidations from './FormValidations';
+import { useNavigate } from 'react-router';
 
 dayjs.extend(CustomParseFormat);
 
@@ -30,22 +31,17 @@ export default function PersonalInformationForm() {
   const { getCep } = useCep();
   const { enrollment } = useEnrollment();
   const { saveEnrollmentLoading, saveEnrollment } = useSaveEnrollment();
+  const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    handleChange,
-    data,
-    errors,
-    setData,
-    customHandleChange,
-  } = useForm({
+  const { handleSubmit, handleChange, data, errors, setData, customHandleChange } = useForm({
     validations: FormValidations,
 
-    onSubmit: async(data) => {
+    // eslint-disable-next-line space-before-function-paren
+    onSubmit: async (data) => {
       const newData = {
         name: data.name,
         cpf: data.cpf.replaceAll('.', '').replaceAll('-', ''),
-        birthday: dayjs(data.birthday).toISOString(),
+        birthday: await dayjs(data.birthday).toISOString(),
         address: {
           cep: data.cep,
           street: data.street,
@@ -60,6 +56,7 @@ export default function PersonalInformationForm() {
 
       try {
         await saveEnrollment(newData);
+        navigate('/dashboard/payment');
         toast('Informações salvas com sucesso!');
       } catch (err) {
         toast('Não foi possível salvar suas informações!');
@@ -94,7 +91,7 @@ export default function PersonalInformationForm() {
         number: enrollment.address.number,
         state: enrollment.address.state,
         neighborhood: enrollment.address.neighborhood,
-        addressDetail: enrollment.address.addressDetail
+        addressDetail: enrollment.address.addressDetail,
       });
     }
   }, [enrollment]);
@@ -111,7 +108,7 @@ export default function PersonalInformationForm() {
     if (isValidCep(valueWithoutMask)) {
       const newDataValues = {
         ...data,
-        [name]: value
+        [name]: value,
       };
 
       setDynamicInputIsLoading(true);
@@ -126,7 +123,7 @@ export default function PersonalInformationForm() {
         state: cepData.uf,
       });
     }
-  };
+  }
 
   return (
     <>
@@ -195,13 +192,7 @@ export default function PersonalInformationForm() {
             {errors.cep && <ErrorMsg>{errors.cep}</ErrorMsg>}
           </InputWrapper>
           <InputWrapper>
-            <Select
-              label="Estado"
-              name="state"
-              id="state"
-              value={data?.state || ''}
-              onChange={handleChange('state')}
-            >
+            <Select label="Estado" name="state" id="state" value={data?.state || ''} onChange={handleChange('state')}>
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
@@ -236,12 +227,7 @@ export default function PersonalInformationForm() {
           </InputWrapper>
 
           <InputWrapper>
-            <Input
-              label="Número"
-              name="number"
-              value={data?.number || ''}
-              onChange={handleChange('number')}
-            />
+            <Input label="Número" name="number" value={data?.number || ''} onChange={handleChange('number')} />
             {errors.number && <ErrorMsg>{errors.number}</ErrorMsg>}
           </InputWrapper>
           <InputWrapper>
@@ -262,7 +248,7 @@ export default function PersonalInformationForm() {
               onChange={handleChange('addressDetail')}
             />
           </InputWrapper>
-          
+
           <SubmitContainer>
             <Button type="submit" disabled={dynamicInputIsLoading || saveEnrollmentLoading}>
               Salvar
@@ -275,12 +261,12 @@ export default function PersonalInformationForm() {
 }
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+  margin-bottom: 20px !important;
 `;
 
-const SubmitContainer = styled.div`
-  margin-top: 40px!important;
-  width: 100%!important;
+export const SubmitContainer = styled.div`
+  margin-top: 40px !important;
+  width: 100% !important;
 
   > button {
     margin-top: 0 !important;
