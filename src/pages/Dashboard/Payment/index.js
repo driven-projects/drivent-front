@@ -4,50 +4,14 @@ import Typography from '@material-ui/core/Typography';
 
 import useEnrollment from '../../../hooks/api/useEnrollment';
 import PaymentOptionsBox from '../../../components/Payment/PaymentOptionsBox';
+import TicketMode from '../../../components/Payment/TicketMode';
+import TicketHotelMode from '../../../components/Payment/TicketHotelMode';
 
 export default function Payment() {
   const { enrollment } = useEnrollment();
 
   const [isRemote, setIsRemote] = useState();
   const [includesHotel, setIncludesHotel] = useState();
-
-  const [isPresentialActive, setIsPresentialActive] = useState(false);
-  const [isRemoteActive, setIsRemoteActive] = useState(false);
-
-  const [isHotelActive, setIsHotelActive] = useState(false);
-  const [isNonHotelActive, setIsNonHotelActive] = useState(false);
-
-  function selectPresential() {
-    setIsRemote(false);
-    setIsPresentialActive(!isPresentialActive);
-    if(isRemoteActive === true) {
-      setIsRemoteActive(false);
-    };
-  };
-
-  function selectRemote() {
-    setIsRemote(true);
-    setIsRemoteActive(!isRemoteActive);
-    if(isPresentialActive === true) {
-      setIsPresentialActive(false);
-    }
-  }
-
-  function selectWithoutHotel() {
-    setIncludesHotel(false);
-    setIsHotelActive(!isHotelActive);
-    if(isNonHotelActive === true) {
-      setIsNonHotelActive(false);
-    };
-  };
-
-  function selectWithHotel() {
-    setIncludesHotel(true);
-    setIsNonHotelActive(!isNonHotelActive);
-    if(isHotelActive === true) {
-      setIsHotelActive(false);
-    }
-  }
   
   return (
     <>
@@ -64,73 +28,31 @@ export default function Payment() {
         :
 
         <>
-          <TicketTypeModelBar>
-            <StyledTypography variant="h6">
-              Primeiro, escolha sua modalidade de ingresso
-            </StyledTypography>
-
-            <OptionsBar>
-              <PaymentOptionsBox onClick={selectPresential} 
-                style={{
-                  backgroundColor: isPresentialActive ? '#FFEED2' : ''
-                }}
-              >
-                <h6>
-                  Presencial
-                </h6>
-                <h6>
-                  R$ 250
-                </h6>
-              </PaymentOptionsBox>
-              <PaymentOptionsBox onClick={selectRemote}
-                style={{
-                  backgroundColor: isRemoteActive ? '#FFEED2' : ''
-                }}
-              >
-                <h6>
-                  Online
-                </h6>
-                <h6>
-                  R$ 100
-                </h6>
-              </PaymentOptionsBox>
-            </OptionsBar>
-          </TicketTypeModelBar>
+          <TicketMode setIsRemote={setIsRemote} />
 
           {(isRemote === false) ?
 
-            <TicketTypeModelBar>
-              <StyledTypography variant="h6">
-                Ótimo! Agora escolha sua modalidade de hospedagem
-              </StyledTypography>
+            <>
+              <TicketHotelMode setIncludesHotel={setIncludesHotel} />
 
-              <OptionsBar>
-                <PaymentOptionsBox onClick={selectWithoutHotel} 
-                  style={{
-                    backgroundColor: isHotelActive ? '#FFEED2' : ''
-                  }}
-                >
-                  <h6>
-                    Sem hotel
-                  </h6>
-                  <h6>
-                    + R$ 0
-                  </h6>
-                </PaymentOptionsBox>
-                <PaymentOptionsBox onClick={selectWithHotel}
-                  style={{
-                    backgroundColor: isNonHotelActive ? '#FFEED2' : ''
-                  }}
-                >
-                  <h6>
-                    Com hotel
-                  </h6>
-                  <h6>
-                    + R$ 250
-                  </h6>
-                </PaymentOptionsBox>
-              </OptionsBar>
-            </TicketTypeModelBar>
+              {(includesHotel === false) ?
+                <>
+                  <TicketTypeModelBar>
+                    <StyledTypography variant="h6">
+                      Fechado! O total ficou em R$ 250. Agora é só confirmar:
+                    </StyledTypography>
+                  </TicketTypeModelBar>
+                </>
+                :
+                <>
+                  <TicketTypeModelBar>
+                    <StyledTypography variant="h6">
+                      Fechado! O total ficou em R$ 600. Agora é só confirmar:
+                    </StyledTypography>
+                  </TicketTypeModelBar>
+                </>
+              }
+            </>
 
             :
 
@@ -140,6 +62,7 @@ export default function Payment() {
               </StyledTypography>
             </TicketTypeModelBar>
           }
+
         </>
       }  
     </>
