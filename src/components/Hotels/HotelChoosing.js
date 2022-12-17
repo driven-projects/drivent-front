@@ -1,52 +1,26 @@
 import { Typography } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import useToken from '../../hooks/useToken';
-import { getHotels } from '../../services/hotelsApi';
+import useHotels from '../../hooks/api/useHotels';
 
 export default function ChooseHotel() {
-  const token = useToken();
-  const [hotels, setHotels] = useState([
-    {
-      id: 1,
-      name: 'Driven Palace',
-      image: 'https://i.ytimg.com/vi/uC4n3_EK_kA/movieposter.jpg',
-      createdAt: '',
-      updatedAt: '',
-    },
-    {
-      id: 1,
-      name: 'Driven Palace',
-      image: 'https://i.ytimg.com/vi/uC4n3_EK_kA/movieposter.jpg',
-      createdAt: '',
-      updatedAt: '',
-    },
-    {
-      id: 1,
-      name: 'Driven Palace',
-      image: 'https://i.ytimg.com/vi/uC4n3_EK_kA/movieposter.jpg',
-      createdAt: '',
-      updatedAt: '',
-    },
-    {
-      id: 1,
-      name: 'Driven Palace',
-      image: 'https://i.ytimg.com/vi/uC4n3_EK_kA/movieposter.jpg',
-      createdAt: '',
-      updatedAt: '',
-    }
-  ]);
+  const { hotels, hotelsError, hotelsLoading } = useHotels();
+  const [ selected, setSelected ] = useState(0);
 
-  //   useEffect(() => { //resolve payment
-  //     getHotels(token).then((res) => setHotels(res));
-  //   }, []);
+  if(hotelsLoading || hotelsError || !hotels.length) 
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+        <Message>Não há hoteis disponíveis</Message>
+      </>
+    );
 
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       <Message>Primeiro escolha o hotel</Message>
       <Hotels>
-        {hotels.map((hotel) => <Hotel name={hotel.name} image={hotel.image} />)}
+        {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selected, setSelected }} key={index} />)}
       </Hotels>
     </>
   );
@@ -72,9 +46,9 @@ const Hotels = styled.div`
   }
 `;
 
-function Hotel({ name, image }) {
+function Hotel({ hotel: { id, name, image }, selected: { selected, setSelected } }) {
   return (
-    <HotelContainer>
+    <HotelContainer selected={selected===id} onClick={() => setSelected(id)}>
       <img src={image} alt='' />
       <h4>{name}</h4>
     </HotelContainer>
@@ -84,7 +58,7 @@ function Hotel({ name, image }) {
 const HotelContainer = styled.div`
   width: 196px;
   height: 264px;
-  background-color: #EBEBEB;
+  background-color: ${props => (props.selected)? '#FFEED2;' : '#EBEBEB;'};
   border-radius: 10px;
   margin-right: 19px;
   padding: 16px 14px 16px 14px;
