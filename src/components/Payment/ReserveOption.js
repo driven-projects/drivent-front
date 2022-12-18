@@ -1,11 +1,13 @@
 import { Typography } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Form/Button';
 
 export default function ReserveOption({ value, isRemote, includesHotel }) {
+  const navigate = useNavigate();
   function goToReservationPage() {
-
-  }
+    navigate('/ADICIONAR_ROTA', { value: value, isRemote: isRemote, includesHotel: includesHotel });
+  };
   
   return (
     <TicketTypeModelBar>
