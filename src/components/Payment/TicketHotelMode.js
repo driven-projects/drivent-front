@@ -4,24 +4,26 @@ import Typography from '@material-ui/core/Typography';
 
 import PaymentOptionsBox from './PaymentOptionsBox';
 
-export default function TicketHotelMode({ setIncludesHotel }) {
+export default function TicketHotelMode({ setIncludesHotel, setShowHotelButton }) {
   const [isHotelActive, setIsHotelActive] = useState(false);
   const [isNonHotelActive, setIsNonHotelActive] = useState(false);
 
   function selectWithoutHotel() {
     setIncludesHotel(false);
-    setIsHotelActive(!isHotelActive);
+    setIsHotelActive(true);
     if(isNonHotelActive === true) {
       setIsNonHotelActive(false);
     };
+    setShowHotelButton(true);
   };
 
   function selectWithHotel() {
     setIncludesHotel(true);
-    setIsNonHotelActive(!isNonHotelActive);
+    setIsNonHotelActive(true);
     if(isHotelActive === true) {
       setIsHotelActive(false);
     }
+    setShowHotelButton(true);
   };
 
   return (
@@ -61,14 +63,14 @@ export default function TicketHotelMode({ setIncludesHotel }) {
 }
 
 const TicketTypeModelBar = styled.div`
-  height: 235px;
+  height: 210px;
   display: flex;
   flex-direction: column;
 
 `;
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+  margin-bottom: 10px!important;
 `;
 
 const OptionsBar = styled.div`

@@ -3,15 +3,18 @@ import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 
 import useEnrollment from '../../../hooks/api/useEnrollment';
-import PaymentOptionsBox from '../../../components/Payment/PaymentOptionsBox';
 import TicketMode from '../../../components/Payment/TicketMode';
 import TicketHotelMode from '../../../components/Payment/TicketHotelMode';
+import ReserveOption from '../../../components/Payment/ReserveOption';
 
 export default function Payment() {
   const { enrollment } = useEnrollment();
 
-  const [isRemote, setIsRemote] = useState();
-  const [includesHotel, setIncludesHotel] = useState();
+  const [isRemote, setIsRemote] = useState('');
+  const [includesHotel, setIncludesHotel] = useState('');
+
+  const [showOnlinebutton, setShowOnlinebutton] = useState(false);
+  const [showHotelButton, setShowHotelButton] = useState(false);
   
   return (
     <>
@@ -28,41 +31,34 @@ export default function Payment() {
         :
 
         <>
-          <TicketMode setIsRemote={setIsRemote} />
+          <TicketMode setIsRemote={setIsRemote} setShowOnlinebutton={setShowOnlinebutton} setShowHotelButton={setShowHotelButton} />
 
           {(isRemote === false) ?
 
             <>
-              <TicketHotelMode setIncludesHotel={setIncludesHotel} />
+              <TicketHotelMode setIncludesHotel={setIncludesHotel} setShowHotelButton={setShowHotelButton} />
 
-              {(includesHotel === false) ?
+              {(showHotelButton === true) ?
                 <>
-                  <TicketTypeModelBar>
-                    <StyledTypography variant="h6">
-                      Fechado! O total ficou em R$ 250. Agora é só confirmar:
-                    </StyledTypography>
-                  </TicketTypeModelBar>
+                  {(includesHotel === false) ?
+                    <ReserveOption value={250} isRemote={isRemote} includesHotel={includesHotel} />
+                    :
+                    <ReserveOption value={600} isRemote={isRemote} includesHotel={includesHotel} />
+                  }
                 </>
                 :
-                <>
-                  <TicketTypeModelBar>
-                    <StyledTypography variant="h6">
-                      Fechado! O total ficou em R$ 600. Agora é só confirmar:
-                    </StyledTypography>
-                  </TicketTypeModelBar>
-                </>
+                <></>
               }
             </>
-
             :
-
-            <TicketTypeModelBar>
-              <StyledTypography variant="h6">
-                Fechado! O total ficou em R$ 100. Agora é só confirmar:
-              </StyledTypography>
-            </TicketTypeModelBar>
+            <>
+              {(showOnlinebutton === true) ?
+                <ReserveOption value={100} isRemote={isRemote} includesHotel={includesHotel} />
+                :
+                <></>
+              }
+            </>
           }
-
         </>
       }  
     </>
@@ -79,16 +75,4 @@ const StyledCenteredText = styled(Typography)`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const TicketTypeModelBar = styled.div`
-  height: 235px;
-  display: flex;
-  flex-direction: column;
-
-`;
-
-const OptionsBar = styled.div`
-  height: 175px;
-  display: flex;
 `;

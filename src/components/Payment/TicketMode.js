@@ -4,24 +4,27 @@ import Typography from '@material-ui/core/Typography';
 
 import PaymentOptionsBox from './PaymentOptionsBox';
 
-export default function TicketMode({ setIsRemote }) {
+export default function TicketMode({ setIsRemote, setShowOnlinebutton, setShowHotelButton }) {
   const [isPresentialActive, setIsPresentialActive] = useState(false);
   const [isRemoteActive, setIsRemoteActive] = useState(false);
 
   function selectPresential() {
     setIsRemote(false);
-    setIsPresentialActive(!isPresentialActive);
+    setIsPresentialActive(true);
     if(isRemoteActive === true) {
       setIsRemoteActive(false);
     };
+    setShowOnlinebutton(true);
   };
     
   function selectRemote() {
     setIsRemote(true);
-    setIsRemoteActive(!isRemoteActive);
+    setIsRemoteActive(true);
     if(isPresentialActive === true) {
       setIsPresentialActive(false);
     }
+    setShowOnlinebutton(true);
+    setShowHotelButton(false);
   };
   return (
     <TicketTypeModelBar>
@@ -59,14 +62,14 @@ export default function TicketMode({ setIsRemote }) {
 }
 
 const TicketTypeModelBar = styled.div`
-  height: 235px;
+  height: 210px;
   display: flex;
   flex-direction: column;
 
 `;
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
+  margin-bottom: 10px!important;
 `;
 
 const OptionsBar = styled.div`
