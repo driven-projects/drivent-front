@@ -1,7 +1,7 @@
-import ChangeHotel from '../../../components/hotel_temp';
+import ChooseHotel from '../../../components/Hotels/HotelChoosing';
 
 export default function Hotel() {
   return (
-    <ChangeHotel />
+    <ChooseHotel />
   );
 }
