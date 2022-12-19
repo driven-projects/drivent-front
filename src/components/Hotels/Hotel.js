@@ -1,12 +1,42 @@
 import styled from 'styled-components';
+import useHotelRooms from '../../hooks/api/useHotelRooms';
 
 export default function Hotel({ hotel: { id, name, image }, selected: { selected, setSelected } }) {
+  const { hotelRooms, hotelRoomsError, hotelRoomsLoading } = useHotelRooms(id);
+  let roomtypes = '';
+
+  if(!hotelRoomsError && !hotelRoomsLoading )
+    roomtypes = roomTypesText(hotelRooms.roomTypes);
+
   return (
     <HotelContainer selected={selected===id} onClick={() => setSelected(id)}>
       <img src={image} alt='' />
       <h4>{name}</h4>
+      <h5>Tipos de acomodação</h5>
+      <h5>{roomtypes}</h5>
+      <SmallJump/>
+      <h5>Vagas disponíveis</h5>
+      <h5>0</h5>
     </HotelContainer>
   );
+}
+
+function roomTypesText({ single, double, triple }) {
+  let list = [];
+  let text = 'Nenhum';
+
+  if(single) list.push('Single');
+  if(double) list.push('Double');
+  if(triple) list.push('Triple');
+
+  if(list.length === 1) {
+    text = list[0];
+  } else if(list.length === 2) {
+    text = list.join(' e ');
+  } else if (list.length === 3) {
+    text = `${list[0]}, ${list[1]} e ${list[2]}`;
+  }
+  return text;
 }
 
 const HotelContainer = styled.div`
@@ -18,12 +48,22 @@ const HotelContainer = styled.div`
   padding: 16px 14px 16px 14px;
   h4 {
     margin-top: 10px;
+    margin-bottom: 15px;
     color: #343434;
     font-size: 20px;
+  }
+  h5 {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: bold;
   }
   img {
     width: 168px;
     height: 109px;
     border-radius: 5px;
   }
+`;
+
+const SmallJump = styled.div`
+  margin-top: 15px;
 `;
