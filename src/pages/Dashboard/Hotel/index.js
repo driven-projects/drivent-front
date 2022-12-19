@@ -1,3 +1,7 @@
+import ChangeHotel from '../../../components/hotel_temp';
+
 export default function Hotel() {
-  return 'Hotel: Em breve!';
+  return (
+    <ChangeHotel />
+  );
 }

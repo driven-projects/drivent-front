@@ -16,49 +16,48 @@ export default function SelectingTicketType() {
   const [showOnlinebutton, setShowOnlinebutton] = useState(false);
   const [showHotelButton, setShowHotelButton] = useState(false);
 
+  if(!enrollment)
+    return(
+      <StyledCenteredText>
+        <StyledTypography variant="h6">
+          Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso
+        </StyledTypography>
+      </StyledCenteredText>
+    );
+
   return (
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
 
-      {(!enrollment) ?
-        <StyledCenteredText>
-          <StyledTypography variant="h6">
-            Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso
-          </StyledTypography>
-        </StyledCenteredText>
-        :
-        <>
+      <>
+        <TicketMode setIsRemote={setIsRemote} setShowOnlinebutton={setShowOnlinebutton} setShowHotelButton={setShowHotelButton} />
 
-          <TicketMode setIsRemote={setIsRemote} setShowOnlinebutton={setShowOnlinebutton} setShowHotelButton={setShowHotelButton} />
+        {(isRemote === false) ?
+          <>
+            <TicketHotelMode setIncludesHotel={setIncludesHotel} setShowHotelButton={setShowHotelButton} />
 
-          {(isRemote === false) ?
-
-            <>
-              <TicketHotelMode setIncludesHotel={setIncludesHotel} setShowHotelButton={setShowHotelButton} />
-
-              {(showHotelButton === true) ?
-                <>
-                  {(includesHotel === false) ?
-                    <ReserveOption value={250} isRemote={isRemote} includesHotel={includesHotel} />
-                    :
-                    <ReserveOption value={600} isRemote={isRemote} includesHotel={includesHotel} />
-                  }
-                </>
-                :
-                <></>
-              }
-            </>
-            :
-            <>
-              {(showOnlinebutton === true) ?
-                <ReserveOption value={100} isRemote={isRemote} includesHotel={includesHotel} />
-                :
-                <></>
-              }
-            </>
-          }
-        </>
-      }  
+            {(showHotelButton === true) ?
+              <>
+                {(includesHotel === false) ?
+                  <ReserveOption value={250} isRemote={isRemote} includesHotel={includesHotel} />
+                  :
+                  <ReserveOption value={600} isRemote={isRemote} includesHotel={includesHotel} />
+                }
+              </>
+              :
+              <></>
+            }
+          </>
+          :
+          <>
+            {(showOnlinebutton === true) ?
+              <ReserveOption value={100} isRemote={isRemote} includesHotel={includesHotel} />
+              :
+              <></>
+            }
+          </>
+        }
+      </>
     </>
   );
 }

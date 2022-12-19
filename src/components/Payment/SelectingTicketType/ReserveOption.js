@@ -16,7 +16,7 @@ export default function ReserveOption({ value, isRemote, includesHotel }) {
       </StyledTypography>
       <SubmitContainer>
         <Button onClick={goToReservationPage}>
-        Reservar ingresso
+          Reservar ingresso
         </Button>
       </SubmitContainer>
     </TicketTypeModelBar>
