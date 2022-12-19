@@ -1,10 +1,10 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
-// import useTicketType from '../../hooks/api/useTicket';
+import useTicketType from '../../hooks/api/useTicket';
 
 export default function PaymentScreen() {
 // const { payment, paymentError, paymentLoading } = usePayment();
-  //const { getTicketType } = useTicketType();
+  const { ticketType } = useTicketType();
   
   //A SER DELETADO E TROCADO PELAS RESPOSTAS DA API  
   let payment = false;
@@ -23,7 +23,7 @@ export default function PaymentScreen() {
       </>
     );
 
-  if(isRemote === true)
+  if(ticketType.isRemote === true)
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
