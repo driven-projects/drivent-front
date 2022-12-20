@@ -4,9 +4,12 @@ import useHotelRooms from '../../hooks/api/useHotelRooms';
 export default function Hotel({ hotel: { id, name, image }, selected: { selected, setSelected } }) {
   const { hotelRooms, hotelRoomsError, hotelRoomsLoading } = useHotelRooms(id);
   let roomtypes = '';
+  let vacancy = 0;
 
-  if(!hotelRoomsError && !hotelRoomsLoading )
+  if(!hotelRoomsError && !hotelRoomsLoading ) {
     roomtypes = roomTypesText(hotelRooms.roomTypes);
+    vacancy = hotelRooms.vacancy;
+  }
 
   return (
     <HotelContainer selected={selected===id} onClick={() => setSelected(id)}>
@@ -16,7 +19,7 @@ export default function Hotel({ hotel: { id, name, image }, selected: { selected
       <h5>{roomtypes}</h5>
       <SmallJump/>
       <h5>Vagas disponíveis</h5>
-      <h5>0</h5>
+      <h5>{vacancy}</h5>
     </HotelContainer>
   );
 }
