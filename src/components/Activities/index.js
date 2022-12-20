@@ -1,16 +1,28 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import useTicketType from '../../hooks/api/useTicket';
+// import useTicketByUserId from '../../hooks/api/useTicketByUserId';
 
 export default function PaymentScreen() {
-// const { payment, paymentError, paymentLoading } = usePayment();
-  const { ticketType } = useTicketType();
+  // const { userTicket, userTicketLoading, userTicketError } = useTicketByUserId();
   
   //A SER DELETADO E TROCADO PELAS RESPOSTAS DA API  
-  let payment = false;
-  let isRemote = true;
+  let userTicket = { isRemote: true, status: 'RESERVED' };
 
-  if(payment === true)
+  // if(userTicket.isRemote === true && !userTicketLoading && !userTicketError)
+  if(userTicket.isRemote === true)
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
+
+        <StyledCenteredText>
+          <StyledTypography variant='h6'>
+            Sua modalidade de ingresso não necessita escolher atividade. Você terá acesso a todas as atividades.
+          </StyledTypography>
+        </StyledCenteredText>
+      </>
+    );
+
+  if(userTicket.status === 'RESERVED')
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -23,18 +35,10 @@ export default function PaymentScreen() {
       </>
     );
 
-  if(ticketType.isRemote === true)
-    return (
-      <>
-        <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
-
-        <StyledCenteredText>
-          <StyledTypography variant='h6'>
-            Sua modalidade de ingresso não necessita escolher atividade. Você terá acesso a todas as atividades.
-          </StyledTypography>
-        </StyledCenteredText>
-      </>
-    );
+  return (
+    <>
+    </>
+  );
 }
 
 const StyledCenteredText = styled(Typography)`
