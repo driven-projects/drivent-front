@@ -1,3 +1,7 @@
+import SelectingTicketType from '../../../components/Payment/SelectingTicketType';
+
 export default function Payment() {
-  return 'Pagamento: Em breve!';
+  return (
+    <SelectingTicketType/>
+  );
 }
