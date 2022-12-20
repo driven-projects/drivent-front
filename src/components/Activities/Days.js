@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export default function Days({ day }) {
-  console.log(day.name);
   return (
     <DayStyled>
       <h6>
