@@ -5,7 +5,7 @@ import * as paymentApi from '../../services/paymentApi';
 
 export default function usePayment() {
   const token = useToken();
-  console.log('cheguei aqui');
+  
   const {
     loading: paymentLoading,
     error: paymentError,

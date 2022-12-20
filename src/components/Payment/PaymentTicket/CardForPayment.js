@@ -35,8 +35,8 @@ export default function CardForPayment( { ticket } ) {
     try{
       const paymentPost = await postPayment(payment);
       console.log(paymentPost);
+      //necessário conectar com o código de confirmação de compra feito pelo juliano
     }catch(err) {
-      console.log(err.message);
       alert('não foi possível realizar seu pagamento');
     };
   };

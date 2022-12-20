@@ -11,6 +11,7 @@ export default function SelectingTicketType( ) {
         </StyledTypography>
       </StyledCenteredText>
     );*/
+  //Será necessário alinhar com o grupo os hooks
 
   return (
     <>
