@@ -48,13 +48,39 @@ flex-direction: column;
 justify-content: flex-start;
 width: 100%;
 `;
+export const ColumRow = styled.div`
+font-family: 'Roboto', sans-serif;
+display: flex;
+flex-direction: flex;
+justify-content: flex-start;
+width: 100%;
+`;
 
 export const InfoTitle = styled.p`
 color: #454545;
 font-weight:bold;
 font-size:16px;
 .Info{
+  margin-left:20px;
   margin-top:5px;
   font-weight:400;
 }
+.InfoTitle{
+  color: #454545;
+  margin-left:20px;
+  font-weight:bold;
+  font-size:16px;
+}
+`;
+export const EnrollTitle = styled.div`
+font-family: 'Roboto', sans-serif;
+color: #8e8e8e;
+display: flex;
+flex-direction: flex;
+justify-content: center;
+align-items:center;
+height:100%;
+width: 50%;
+margin-left:25%;
+margin-top:25%;
 `;

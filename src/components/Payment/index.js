@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import {
-  Row, Title,
+  ColumRow, Row, Title,
   SectionTitle, StyledDiv,
-  InfoTitle, ChoosedTicket
+  InfoTitle, ChoosedTicket,
+  EnrollTitle, NotEnrollScreen
 } from './section';
 import usePayment from '../../hooks/api/usePayment';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import { CreditCard } from './creditCard';
+import { GreenVerifyer } from './greenVerifyer';
 
 export function PaymentPage() {
   const [Paid, SetPaid] = useState('');
@@ -52,20 +54,25 @@ export function PaymentPage() {
           </SectionTitle>
           {Paid? 
             <InfoTitle>
-                  Pagamento confirmado
-              <p className='Info'>Prossiga para escolha de hospedagem e atividades</p>
+              <ColumRow>  
+                <GreenVerifyer></GreenVerifyer>  
+                <Row>
+                  <p className='InfoTitle'>Pagamento confirmado</p>
+                  <p className='Info'>Prossiga para escolha de hospedagem e atividades</p>
+                </Row>
+              </ColumRow>
             </InfoTitle> : 
             <CreditCard></CreditCard>
           }
         </Row>
       </> 
         : 
-        <>
+        <Row>
           <Title>Ingresso e pagamento</Title> 
-          <InfoTitle>
+          <EnrollTitle>
             Você precisa completar sua incrição antes de prosseguir para escolha de ingresso
-          </InfoTitle>
-        </>
+          </EnrollTitle>
+        </Row>
       }
       
     </StyledDiv>

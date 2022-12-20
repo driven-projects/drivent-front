@@ -50,7 +50,7 @@ const CreditCardStyle = styled.div`
       position:absolute;
       font-size:10PX;
       right:25px;
-      bottom:50vpx;
+      bottom:50px;
       color:#c3c3c3;
     }
 `;
