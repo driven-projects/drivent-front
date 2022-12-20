@@ -1,12 +1,13 @@
 import { Typography } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useReserveTicket from '../../../hooks/api/useReserveTicket';
 import Button from '../../Form/Button';
 
-export default function ReserveOption({ value, isRemote, includesHotel }) {
-  const navigate = useNavigate();
+export default function ReserveOption({ value, isRemote, includesHotel, ticketType }) {
+  const { postReserveTicket } = useReserveTicket();
+
   function goToReservationPage() {
-    navigate('/ADICIONAR_ROTA', { value: value, isRemote: isRemote, includesHotel: includesHotel });
+    const ticketTypeId = ticketType.filter(type => (type.isRemote === isRemote && type.includesHotel === includesHotel))[0].id;
   };
   
   return (
