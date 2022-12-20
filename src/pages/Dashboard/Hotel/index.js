@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useEnrollment from '../../../hooks/api/useEnrollment';
+import ChooseHotel from '../../../components/Hotels/HotelChoosing';
 export default function Hotel() {
   // const { enrollment, getEnrollment } = useEnrollment();
   // const [Enroll, SetEnroll] = useState('');
@@ -12,6 +13,6 @@ export default function Hotel() {
   //   SetEnroll(enrollapi.name); 
   // }
   return (
-    <p>Oi</p>
+    <ChooseHotel />
   );
 }
