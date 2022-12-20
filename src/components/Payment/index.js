@@ -1,60 +1,74 @@
-import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import {
+  Row, Title,
+  SectionTitle, StyledDiv,
+  InfoTitle, ChoosedTicket
+} from './section';
+import usePayment from '../../hooks/api/usePayment';
+import useEnrollment from '../../hooks/api/useEnrollment';
+import { CreditCard } from './creditCard';
 
-export const StyledDiv = styled.div`
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-`;
+export function PaymentPage() {
+  const [Paid, SetPaid] = useState('');
+  const [Enroll, SetEnroll] = useState('');
 
-export const Title = styled.h1`
-  font-size: 32px;
-  margin-left:0px;
-  display:flex;
-  align-items: left;
-  margin-top: -5px;
-`;
+  const { getTicket } = usePayment();
+  const { getEnrollment } = useEnrollment();
 
-export const SectionTitle = styled.p`
-margin-top:20px;
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: #8e8e8e;
-`;
+  useEffect(() => {
+    GetPayment();
+    getEnroll();
+  }, []);
 
-export const ChoosedTicket = styled.div`
-  margin-top:17px;
-  width:290px;
-  height:108px;
-  background-color:#FFEED2;
-  border-radius:15px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  .Title{
-    color: #454545;
+  async function getEnroll() {
+    const enrollapi = await getEnrollment();
+    SetEnroll(enrollapi.name); 
   }
-  .Price{
-    margin-top:5px;
-    color:#898989;
+  async function GetPayment() {
+    const payment = await getTicket();
+    if(payment.status === 'PAID') {
+      SetPaid(payment.status); 
+    }
   }
-`;
+  return (
+    <StyledDiv>
+      {Enroll? <>
+        <Row>
+          <Title>Ingresso e pagamento</Title>
+        </Row>
+        <Row>
+          <SectionTitle>
+              Ingresso escolhido 
+          </SectionTitle>
+          <ChoosedTicket>
+            <p className='Title'>Presencial + Com Hotel</p>
+            <p className='Price'>R$ 600</p>
+          </ChoosedTicket>
+          
+        </Row>
+        <Row>
+          <SectionTitle>
+            Pagamento
+          </SectionTitle>
+          {Paid? 
+            <InfoTitle>
+                  Pagamento confirmado
+              <p className='Info'>Prossiga para escolha de hospedagem e atividades</p>
+            </InfoTitle> : 
+            <CreditCard></CreditCard>
+          }
+        </Row>
+      </> 
+        : 
+        <>
+          <Title>Ingresso e pagamento</Title> 
+          <InfoTitle>
+            Você precisa completar sua incrição antes de prosseguir para escolha de ingresso
+          </InfoTitle>
+        </>
+      }
+      
+    </StyledDiv>
+  );
+}
 
-export const Row = styled.div`
-  font-family: 'Roboto', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
-export const InfoTitle = styled.p`
-  color: #454545;
-  font-weight:bold;
-  font-size:16px;
-  .Info{
-    margin-top:5px;
-    font-weight:400;
-  }
-`;
