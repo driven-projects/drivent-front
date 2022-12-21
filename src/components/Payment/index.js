@@ -38,7 +38,6 @@ export function PaymentPage() {
       SetPaid(payment.status); 
     }
   }
-  console.log(userTicket);
   return (
     <StyledDiv>
       {Enroll? 
