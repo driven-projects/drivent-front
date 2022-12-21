@@ -15,7 +15,7 @@ align-items: left;
 margin-top: -5px;
 `;
 
-export const SectionTitle = styled.p`
+export const SectionTitle = styled.div`
 margin-top:20px;
 font-size: 24px;
 margin-bottom: 10px;
@@ -56,7 +56,7 @@ justify-content: flex-start;
 width: 100%;
 `;
 
-export const InfoTitle = styled.p`
+export const InfoTitle = styled.div`
 color: #454545;
 font-weight:bold;
 font-size:16px;
