@@ -12,15 +12,17 @@ export default function Hotel({ hotel: { id, name, image }, selected: { selected
   }
 
   return (
-    <HotelContainer selected={selected===id} onClick={() => setSelected(id)}>
-      <img src={image} alt='' />
-      <h4>{name}</h4>
-      <h5>Tipos de acomodação</h5>
-      <h5>{roomtypes}</h5>
-      <SmallJump/>
-      <h5>Vagas disponíveis</h5>
-      <h5>{vacancy}</h5>
-    </HotelContainer>
+    <>
+      <HotelContainer selected={selected===id} onClick={() => setSelected(id)}>
+        <img src={image} alt='' />
+        <h4>{name}</h4>
+        <h5>Tipos de acomodação</h5>
+        <h5>{roomtypes}</h5>
+        <SmallJump/>
+        <h5>Vagas disponíveis</h5>
+        <h5>{vacancy}</h5>
+      </HotelContainer>
+    </>
   );
 }
 

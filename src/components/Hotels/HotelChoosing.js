@@ -4,10 +4,11 @@ import usePayment from '../../hooks/api/usePayment';
 import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import Hotel from './Hotel';
+import ChooseRoom from './RoomsChoosing';
 
 export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
-  const [ selected, setSelected ] = useState(0);
+  const [ selected, setSelected ] = useState(null);
 
   const { getTicket } = usePayment();
   const [ticketinfo, Setticketinfo] = useState('');
@@ -45,6 +46,7 @@ export default function ChooseHotel() {
           <Hotels>
             {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selected, setSelected }} key={index} />)}
           </Hotels>
+          {(selected)? <ChooseRoom selectedHotel={selected} /> : <></>}
         </> 
         : 
         <HotelTitle>oi</HotelTitle> 
@@ -67,11 +69,13 @@ const Hotels = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 52px;
   overflow-x: scroll;
   ::-webkit-scrollbar {
     display: none;
   }
 `;
+
 const HotelTitle = styled.div`
 font-family: 'Roboto', sans-serif;
 color: #8e8e8e;
