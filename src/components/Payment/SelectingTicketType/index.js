@@ -13,7 +13,7 @@ export default function SelectingTicketType() {
   const { enrollment } = useEnrollment();
   const { ticketType, ticketTypeLoading, ticketTypeError } = useTicketType();
   const { userTicket } = useTicketByUserId();
-  console.log(userTicket);
+  console.log(ticketType);
 
   let onlineTicket = [];
   let withHotelTicket = [];

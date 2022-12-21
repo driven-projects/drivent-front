@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import usePayment from '../../hooks/api/usePayment';
 import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import Hotel from './Hotel';
@@ -8,21 +9,46 @@ export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
   const [ selected, setSelected ] = useState(0);
 
+  const { getTicket } = usePayment();
+  const [ticketinfo, Setticketinfo] = useState('');
+  useEffect(() => {
+    getEnroll();
+  }, []);
+
+  async function getEnroll() {
+    const ticketApi = await getTicket();
+    if(ticketApi.TicketType.includesHotel === true) {
+      Setticketinfo(true);
+    }
+  }
   if(hotelsLoading || hotelsError || !hotels.length) 
     return (
       <>
         <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-        <Message>Não há hoteis disponíveis</Message>
+        {ticketinfo? 
+          <Message>Não há hoteis disponíveis</Message> 
+          : 
+          <HotelTitle>Sua modalidade de ingresso
+            não inclui hospedagem <br/>
+            Prossiga para a escolha de Atividades
+          </HotelTitle> 
+        }
       </>
     );
 
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      <Message>Primeiro escolha o hotel</Message>
-      <Hotels>
-        {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selected, setSelected }} key={index} />)}
-      </Hotels>
+      {ticketinfo? 
+        <>
+          <Message>Primeiro escolha o hotel</Message>
+          <Hotels>
+            {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selected, setSelected }} key={index} />)}
+          </Hotels>
+        </> 
+        : 
+        <HotelTitle>oi</HotelTitle> 
+      }
     </>
   );
 }
@@ -45,4 +71,16 @@ const Hotels = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
+`;
+const HotelTitle = styled.div`
+font-family: 'Roboto', sans-serif;
+color: #8e8e8e;
+display: flex;
+flex-direction: flex;
+justify-content: center;
+align-items:center;
+height:20%;
+width: 50%;
+margin-left:25%;
+margin-top:30%;
 `;
