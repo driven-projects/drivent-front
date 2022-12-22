@@ -4,7 +4,7 @@ export default function Days({ day }) {
   return (
     <DayStyled>
       <h6>
-        {day.name}, {day.date}
+        {day?.name}, {day?.date}
       </h6>
     </DayStyled>
   );
