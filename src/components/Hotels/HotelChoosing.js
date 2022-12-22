@@ -1,17 +1,17 @@
 import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
-import usePayment from '../../hooks/api/usePayment';
 import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import Hotel from './Hotel';
 import ChooseRoom from './RoomsChoosing';
+import useTicket from '../../hooks/api/useTicket';
 
 export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
   const [ selectedHotel, setSelectedHotel ] = useState(null);
 
-  const { getTicket } = usePayment();
-  const [ticketinfo, Setticketinfo] = useState('');
+  const { getTicket } = useTicket();
+  const [ticketinfo, setTicketinfo] = useState(false);
   useEffect(() => {
     getEnroll();
   }, []);
@@ -19,9 +19,10 @@ export default function ChooseHotel() {
   async function getEnroll() {
     const ticketApi = await getTicket();
     if(ticketApi.TicketType.includesHotel === true) {
-      Setticketinfo(true);
+      setTicketinfo(true);
     }
   }
+
   if(hotelsLoading || hotelsError || !hotels.length) 
     return (
       <>
@@ -77,14 +78,14 @@ const Hotels = styled.div`
 `;
 
 const HotelTitle = styled.div`
-font-family: 'Roboto', sans-serif;
-color: #8e8e8e;
-display: flex;
-flex-direction: flex;
-justify-content: center;
-align-items:center;
-height:20%;
-width: 50%;
-margin-left:25%;
-margin-top:30%;
+  font-family: 'Roboto', sans-serif;
+  color: #8e8e8e;
+  display: flex;
+  flex-direction: flex;
+  justify-content: center;
+  align-items:center;
+  height:20%;
+  width: 50%;
+  margin-left:25%;
+  margin-top:30%;
 `;

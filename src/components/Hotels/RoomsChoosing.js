@@ -16,6 +16,8 @@ export default function ChooseRoom({ selectedHotel }) {
     rooms = hotelRooms.Rooms;
   }
 
+  console.log(rooms);
+
   return (
     <>
       <Message>Ótima pedida! Agora escolha seu quarto:</Message>
