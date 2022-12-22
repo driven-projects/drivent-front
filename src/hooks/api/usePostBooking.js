@@ -10,7 +10,7 @@ export default function usePostBooking(roomId) {
     loading: postBookingLoading,
     error: postBookingError,
     act: postBooking
-  } = useAsync(() => bookingApi.post({ roomId }, token), false);
+  } = useAsync(() => bookingApi.post({ roomId }, token));
 
   return {
     postBookingLoading,

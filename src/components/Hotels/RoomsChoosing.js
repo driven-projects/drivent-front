@@ -19,13 +19,18 @@ export default function ChooseRoom({ selectedHotel }) {
     rooms = hotelRooms.Rooms;
   }
 
+  function confirmRoom() {
+    postBooking();
+    setSelectedRoom(null);
+  }
+
   return (
     <>
       <Message>Ótima pedida! Agora escolha seu quarto:</Message>
       <Rooms>
         {rooms.map((room, index) => <Room room={room} selected={{ selectedRoom, setSelectedRoom }} key={index}/>)}
       </Rooms>
-      {(selectedRoom)? <BookRoomButton onClick={() => postBooking()}>RESERVAR QUARTO</BookRoomButton> : <></>}
+      {(selectedRoom)? <BookRoomButton onClick={() => confirmRoom()}>RESERVAR QUARTO</BookRoomButton> : <></>}
     </>
   );
 }
