@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 
 import PaymentOptionsBox from './PaymentOptionsBox';
 
-export default function TicketMode({ setIsRemote, setShowOnlinebutton, setShowHotelButton }) {
+export default function TicketMode({ setIsRemote, setIncludesHotel, setShowOnlinebutton, setShowHotelButton, onlineTicket }) {
   const [isPresentialActive, setIsPresentialActive] = useState(false);
   const [isRemoteActive, setIsRemoteActive] = useState(false);
 
@@ -25,7 +25,9 @@ export default function TicketMode({ setIsRemote, setShowOnlinebutton, setShowHo
     }
     setShowOnlinebutton(true);
     setShowHotelButton(false);
+    setIncludesHotel(false);
   };
+
   return (
     <TicketTypeModelBar>
       <StyledTypography variant="h6">
@@ -50,10 +52,10 @@ export default function TicketMode({ setIsRemote, setShowOnlinebutton, setShowHo
             backgroundColor: isRemoteActive ? '#FFEED2' : ''
           }}>
           <h6>
-            Online
+            {onlineTicket.name}
           </h6>
           <h6>
-            R$ 100
+            R$ {onlineTicket.price / 100}
           </h6>
         </PaymentOptionsBox>
       </OptionsBar>
