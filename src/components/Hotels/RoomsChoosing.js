@@ -1,21 +1,17 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useHotelRooms from '../../hooks/api/useHotelRooms';
+import Room from './Room';
 
 export default function ChooseRoom({ selectedHotel }) {
-  console.log(selectedHotel);
-  const [ refresh, setRefresh ] = useState(true);
-  //não relança a req ao mudar o selectedHotel
-  let { hotelRooms, hotelRoomsError, hotelRoomsLoading } = useHotelRooms(selectedHotel);
-  
+  const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
+  const [ selectedRoom, setSelectedRoom ] = useState(null);
+
   useEffect(() => {
-    setRefresh(!refresh);
+    getHotelRooms();
   }, [selectedHotel]);
-
-  console.log(hotelRooms);
-  
+ 
   let rooms = [];
-
   if(!hotelRoomsError && !hotelRoomsLoading ) {
     rooms = hotelRooms.Rooms;
   }
@@ -23,7 +19,9 @@ export default function ChooseRoom({ selectedHotel }) {
   return (
     <>
       <Message>Ótima pedida! Agora escolha seu quarto:</Message>
-      {rooms.map((room) => <div>{room.name}</div>)}
+      <Rooms>
+        {rooms.map((room, index) => <Room room={room} selected={{ selectedRoom, setSelectedRoom }} key={index}/>)}
+      </Rooms>    
     </>
   );
 }
@@ -31,4 +29,9 @@ export default function ChooseRoom({ selectedHotel }) {
 const Message = styled.p`
   color: #8E8E8E;
   margin-bottom: 32px;
+`;
+
+const Rooms = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;

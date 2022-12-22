@@ -8,7 +8,7 @@ import ChooseRoom from './RoomsChoosing';
 
 export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
-  const [ selected, setSelected ] = useState(null);
+  const [ selectedHotel, setSelectedHotel ] = useState(null);
 
   const { getTicket } = usePayment();
   const [ticketinfo, Setticketinfo] = useState('');
@@ -44,9 +44,9 @@ export default function ChooseHotel() {
         <>
           <Message>Primeiro escolha o hotel</Message>
           <Hotels>
-            {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selected, setSelected }} key={index} />)}
+            {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selectedHotel, setSelectedHotel }} key={index} />)}
           </Hotels>
-          {(selected)? <ChooseRoom selectedHotel={selected} /> : <></>}
+          {(selectedHotel)? <ChooseRoom selectedHotel={selectedHotel} /> : <></>}
         </> 
         : 
         <HotelTitle>oi</HotelTitle> 
