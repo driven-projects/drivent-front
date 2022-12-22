@@ -1,12 +1,25 @@
 import { Typography } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useReserveTicket from '../../../hooks/api/useReserveTicket';
 import Button from '../../Form/Button';
+import { toast } from 'react-toastify';
 
-export default function ReserveOption({ value, isRemote, includesHotel }) {
-  const navigate = useNavigate();
-  function goToReservationPage() {
-    navigate('/ADICIONAR_ROTA', { value: value, isRemote: isRemote, includesHotel: includesHotel });
+export default function ReserveOption({ value, isRemote, includesHotel, ticketType }) {
+  const { postReserveTicket } = useReserveTicket();
+
+  async function goToReservationPage() {
+    const ticketTypeId = ticketType.filter(type => (type.isRemote === isRemote && type.includesHotel === includesHotel))[0].id;
+
+    const body = {
+      ticketTypeId: ticketTypeId,
+    };
+
+    try {
+      await postReserveTicket(body);
+      toast('Ticket reservado com sucesso!');
+    } catch (error) {
+      toast('Ticket não pode ser reservado.');
+    }
   };
   
   return (

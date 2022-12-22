@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 
 import PaymentOptionsBox from './PaymentOptionsBox';
 
-export default function TicketHotelMode({ setIncludesHotel, setShowHotelButton }) {
+export default function TicketHotelMode({ setIncludesHotel, setShowHotelButton, withHotelTicket, withoutHotelTicket }) {
   const [isHotelActive, setIsHotelActive] = useState(false);
   const [isNonHotelActive, setIsNonHotelActive] = useState(false);
 
@@ -39,10 +39,10 @@ export default function TicketHotelMode({ setIncludesHotel, setShowHotelButton }
           }}>
 
           <h6>
-            Sem hotel
+            {withoutHotelTicket.name}
           </h6>
           <h6>
-            + R$ 0
+            + R$ {(withoutHotelTicket.price - withoutHotelTicket.price) / 100}
           </h6>
         </PaymentOptionsBox>
         <PaymentOptionsBox onClick={selectWithHotel}
@@ -51,10 +51,10 @@ export default function TicketHotelMode({ setIncludesHotel, setShowHotelButton }
           }}>
 
           <h6>
-            Com hotel
+            {withHotelTicket.name}
           </h6>
           <h6>
-            + R$ 250
+            + R$ {(withHotelTicket.price - withoutHotelTicket.price) / 100}
           </h6>
         </PaymentOptionsBox>
       </OptionsBar>
