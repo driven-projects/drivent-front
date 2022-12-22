@@ -35,7 +35,6 @@ export default function SelectingTicketType() {
     return(
       <>
         <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
-
         <StyledCenteredText>
           <StyledTypography variant="h6">
             Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso
@@ -92,4 +91,5 @@ const StyledCenteredText = styled(Typography)`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 `;
