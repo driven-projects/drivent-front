@@ -1,6 +1,7 @@
 import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
-import usePayment from '../../hooks/api/usePayment';
+import useTicket from '../../hooks/api/useTicket';
+import useBooking from '../../hooks/api/useBooking';
 import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import Hotel from './Hotel';
@@ -9,10 +10,13 @@ export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
   const [ selected, setSelected ] = useState(0);
 
-  const { getTicket } = usePayment();
+  const { getTicket } = useTicket();
+  const { getBookings } = useBooking();
   const [ticketinfo, Setticketinfo] = useState('');
+  const [bookinginfo, Setbookinginfo] = useState('');
   useEffect(() => {
     getEnroll();
+    VerifyBooking();
   }, []);
 
   async function getEnroll() {
@@ -21,6 +25,21 @@ export default function ChooseHotel() {
       Setticketinfo(true);
     }
   }
+  async function VerifyBooking() {
+    const bookingApi = await getBookings();
+    console.log(bookingApi);
+    if(bookingApi) {
+      Setbookinginfo(bookinginfo);
+    }
+  }
+  if(bookinginfo) {
+    return (
+      <>
+        <StyledTypography variant="h4">Mandou bem</StyledTypography>
+      </>
+    );
+  }
+
   if(hotelsLoading || hotelsError || !hotels.length) 
     return (
       <>
