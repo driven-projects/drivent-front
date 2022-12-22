@@ -6,14 +6,14 @@ import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import usePayment from '../../../hooks/api/usePayment';
 
-export default function CardForPayment( { ticket } ) {
+export default function CardForPayment( { ticket, Paid, SetPaid } ) {
   const [cardNumber, setCardNumber] = useState('');
   const [cardDateExp, setCardDateExp] = useState('');
   const [cardCVC, setCardCVC] = useState('');
   const [cardName, setCardName] = useState('');
   const [cardIssuer, setCardIssuer] = useState('');
   const [cardFocus, setCardFocus] =  useState('');
-
+ 
   const { postPayment } = usePayment();
         
   function handleInputFocus(e) { 
@@ -35,7 +35,7 @@ export default function CardForPayment( { ticket } ) {
     try{
       const paymentPost = await postPayment(payment);
       console.log(paymentPost);
-      //necessário conectar com o código de confirmação de compra feito pelo juliano
+      SetPaid(!Paid);
     }catch(err) {
       alert('não foi possível realizar seu pagamento');
     };
@@ -46,11 +46,10 @@ export default function CardForPayment( { ticket } ) {
   } 
 
   return(
-    <>
-      <StyledTypography variant="h6">
-     Pagamento
+    <> 
+      <StyledTypography variant="h6" id="StyledTy">
+      Pagamento
       </StyledTypography>
-
       <FormCardContainer id="PaymentForm">
         <Form onSubmit={handleForm} id="Form">
           <ContainerInfos id="ContainerInfos">
@@ -62,7 +61,7 @@ export default function CardForPayment( { ticket } ) {
                 name={cardName}
                 number={cardNumber}
                 callback={handleCallback}
-              />
+              /> 
             </CardContainer>  
             <ContainerForm id="ContainerForm">
               <ContainerName id="ContainerName">
@@ -115,7 +114,7 @@ export default function CardForPayment( { ticket } ) {
           </Button>
         </Form>
       </FormCardContainer > 
-    </>
+    </> 
   );
 }
 

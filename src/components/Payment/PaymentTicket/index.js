@@ -1,20 +1,13 @@
-import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import TicketChoosed from './TicketChoosed';
 import CardForPayment from './CardForPayment';
 import useTicket from '../../../hooks/api/useTicket';
 
-export default function PaymentTicket( ) {
+export default function PaymentTicket( { Paid, SetPaid } ) {
   const { ticket, ticketError, ticketLoading } = useTicket();
   return (
     <>
-      <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <TicketChoosed ticket={ ticket } ticketError={ ticketError } ticketLoading={ ticketLoading }/>
-      <CardForPayment ticket={ ticket } />
+      <CardForPayment ticket={ ticket } Paid={ Paid } SetPaid={ SetPaid }/>
     </>
   );
 }
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;

@@ -1,7 +1,6 @@
-import SelectingTicketType from '../../../components/Payment/SelectingTicketType';
-
+import { PaymentPage } from '../../../components/Payment';
 export default function Payment() {
-  return  (
-    <SelectingTicketType/>
+  return (
+    <PaymentPage/>
   );
 }
