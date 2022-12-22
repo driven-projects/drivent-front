@@ -7,7 +7,7 @@ import PaymentOptionsBox from './PaymentOptionsBox';
 export default function TicketMode({ setIsRemote, setIncludesHotel, setShowOnlinebutton, setShowHotelButton, onlineTicket }) {
   const [isPresentialActive, setIsPresentialActive] = useState(false);
   const [isRemoteActive, setIsRemoteActive] = useState(false);
-
+   
   function selectPresential() {
     setIsRemote(false);
     setIsPresentialActive(true);
