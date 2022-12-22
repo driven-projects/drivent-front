@@ -1,19 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-
 import TicketMode from './TicketMode';
 import TicketHotelMode from './TicketHotelMode';
 import ReserveOption from './ReserveOption';
 import useEnrollment from '../../../hooks/api/useEnrollment';
-import useTicketType from '../../../hooks/api/useTicket';
-import useTicketByUserId from '../../../hooks/api/useTicketByUserId';
+import useTicketType from '../../../hooks/api/useTicketType';
+import useTicket from '../../../hooks/api/useTicket';
+import PaymentTicket from '../PaymentTicket';
 
-export default function SelectingTicketType() {
+export default function SelectingTicketType({ Paid, SetPaid }) {
   const { enrollment } = useEnrollment();
   const { ticketType, ticketTypeLoading, ticketTypeError } = useTicketType();
-  const { userTicket } = useTicketByUserId();
-  console.log(ticketType);
+  const { getTicket } = useTicket();
+  const [isRemote, setIsRemote] = useState('');
+  const [includesHotel, setIncludesHotel] = useState('');
+  const [isCreatingTicket, setIsCreatingTicket] = useState(true);
+  const [userTicket, setUserTicket] = useState('');
+
+  const [showOnlinebutton, setShowOnlinebutton] = useState(false);
+  const [showHotelButton, setShowHotelButton] = useState(false);
+
+  useEffect(() => {
+    getTicketByUser();
+  }, []);
+
+  async function getTicketByUser() {
+    const ticket = await getTicket();
+    if (ticket !== null) {
+      setUserTicket(ticket);
+    }
+  }
 
   let onlineTicket = [];
   let withHotelTicket = [];
@@ -24,12 +41,6 @@ export default function SelectingTicketType() {
     withHotelTicket = ticketType.filter((type) => (type.isRemote === false && type.includesHotel === true))[0];
     withoutHotelTicket = ticketType.filter((type) => (type.isRemote === false && type.includesHotel === false))[0];
   }
-
-  const [isRemote, setIsRemote] = useState('');
-  const [includesHotel, setIncludesHotel] = useState('');
-
-  const [showOnlinebutton, setShowOnlinebutton] = useState(false);
-  const [showHotelButton, setShowHotelButton] = useState(false);
 
   if(!enrollment)
     return(
@@ -49,36 +60,50 @@ export default function SelectingTicketType() {
         <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
 
         <>
-          <TicketMode setIsRemote={setIsRemote} setIncludesHotel={setIncludesHotel} setShowOnlinebutton={setShowOnlinebutton} setShowHotelButton={setShowHotelButton} onlineTicket={onlineTicket} />
-
-          {(isRemote === false) ?
+        
+          { isCreatingTicket?
             <>
-              <TicketHotelMode setIncludesHotel={setIncludesHotel} setShowHotelButton={setShowHotelButton} withHotelTicket={withHotelTicket} withoutHotelTicket={withoutHotelTicket} />
+              <TicketMode setIsRemote={setIsRemote} setIncludesHotel={setIncludesHotel} setShowOnlinebutton={setShowOnlinebutton} setShowHotelButton={setShowHotelButton} onlineTicket={onlineTicket} />
 
-              {(showHotelButton === true) ?
+              {(isRemote === false) ?
                 <>
-                  {(includesHotel === false) ?
-                    <ReserveOption value={250} isRemote={isRemote} includesHotel={includesHotel} ticketType={ticketType} />
+                  <TicketHotelMode setIncludesHotel={setIncludesHotel} setShowHotelButton={setShowHotelButton} withHotelTicket={withHotelTicket} withoutHotelTicket={withoutHotelTicket} />
+                  {(showHotelButton === true) ?
+                    <>
+                      {(includesHotel === false) ?
+                        <ReserveOption value={250} isRemote={isRemote} includesHotel={includesHotel} ticketType={ticketType} Paid={ Paid } SetPaid={ SetPaid } isCreatingTicket={isCreatingTicket} setIsCreatingTicket={setIsCreatingTicket}/>
+                        :
+                        <ReserveOption value={600} isRemote={isRemote} includesHotel={includesHotel} ticketType={ticketType} Paid={ Paid } SetPaid={ SetPaid } isCreatingTicket={isCreatingTicket} setIsCreatingTicket={setIsCreatingTicket}/>
+                      }
+                    </>
                     :
-                    <ReserveOption value={600} isRemote={isRemote} includesHotel={includesHotel} ticketType={ticketType} />
+                    <>
+                    </>
                   }
                 </>
                 :
-                <></>
+                <>
+                  {(showOnlinebutton === true) ?
+                    <ReserveOption value={100} isRemote={isRemote} includesHotel={includesHotel} ticketType={ticketType} Paid={ Paid } SetPaid={ SetPaid } isCreatingTicket={isCreatingTicket} setIsCreatingTicket={setIsCreatingTicket}/>
+                    :
+                    <>
+                    </>
+                  }
+                </>
               }
             </>
             :
             <>
-              {(showOnlinebutton === true) ?
-                <ReserveOption value={100} isRemote={isRemote} includesHotel={includesHotel} ticketType={ticketType} />
-                :
-                <></>
-              }
-            </>
-          }
+              <PaymentTicket Paid={ Paid } SetPaid={ SetPaid }/>
+            </>}
         </>
       </>
     );
+  else{
+    return(
+      <PaymentTicket Paid={ Paid } SetPaid={ SetPaid }/>
+    );
+  }
 }
 
 const StyledTypography = styled(Typography)`
@@ -93,3 +118,4 @@ const StyledCenteredText = styled(Typography)`
   justify-content: center;
   text-align: center;
 `;
+

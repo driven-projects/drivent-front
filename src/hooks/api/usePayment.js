@@ -7,12 +7,14 @@ export default function usePayment() {
   const token = useToken();
   
   const {
-    data: ticket,
-    act: getTicket
-  } = useAsync(() => paymentApi.getTicketInfo(token));
+    loading: paymentLoading,
+    error: paymentError,
+    act: postPayment
+  } = useAsync((data) =>  paymentApi.postPayment(data, token), false);
   
   return {
-    ticket,
-    getTicket
+    postPayment,
+    paymentLoading,
+    paymentError
   };
 }
