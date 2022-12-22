@@ -34,7 +34,6 @@ export default function CardForPayment( { ticket, Paid, SetPaid } ) {
     };
     try{
       const paymentPost = await postPayment(payment);
-      console.log(paymentPost);
       SetPaid(!Paid);
     }catch(err) {
       alert('não foi possível realizar seu pagamento');
