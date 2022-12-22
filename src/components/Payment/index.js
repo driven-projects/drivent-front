@@ -36,7 +36,6 @@ export function PaymentPage() {
 
   async function GetPayment() {
     const payment = await getTicket();
-    console.log(payment);
     if(payment.status === 'PAID') {
       SetPaid(payment.status); 
     }
