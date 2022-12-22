@@ -9,7 +9,7 @@ export function useGetBooking() {
     loading: bookingsLoading,
     error: bookingError,
     act: getBookings
-  } = useAsync(() => bookingApi.getBookings({ token }));
+  } = useAsync(() => bookingApi.getBookings( token ));
 
   return {
     booking,

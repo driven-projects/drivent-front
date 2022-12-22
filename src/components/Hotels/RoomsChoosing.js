@@ -8,7 +8,7 @@ export default function ChooseRoom({ selectedHotel }) {
   const [ selectedRoom, setSelectedRoom ] = useState(null);
 
   const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
-  const { postBooking } = useBooking(selectedRoom);
+  const { postBooking } = useBooking.usePostBooking(selectedRoom);
 
   useEffect(() => {
     getHotelRooms();

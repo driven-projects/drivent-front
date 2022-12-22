@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import Hotel from './Hotel';
 import ChooseRoom from './RoomsChoosing';
+import HotelCard from './ChosedRoom';
 
 export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
@@ -17,6 +18,7 @@ export default function ChooseHotel() {
 
   const { getBookings } = useBooking.useGetBooking();
   const [bookinginfo, Setbookinginfo] = useState('');
+
   useEffect(() => {
     getEnroll();
     VerifyBooking();
@@ -27,17 +29,18 @@ export default function ChooseHotel() {
     if(ticketApi.TicketType.includesHotel === true) setTicketinfo(true);
     if(ticketApi.status === 'PAID') setTicketpaid(true);
   }
-  
+
   async function VerifyBooking() {
     const bookingApi = await getBookings();
-    if(bookingApi) {
-      Setbookinginfo(bookinginfo);
-    }
+    if(bookingApi)  Setbookinginfo(bookingApi);
   }
+
   if(bookinginfo) {
     return (
       <>
-        <StyledTypography variant="h4">Mandou bem</StyledTypography>
+        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+        <Message>Você já escolheu seu quarto:</Message> 
+        <HotelCard bookinginfo = {bookinginfo}/>
       </>
     );
   }
