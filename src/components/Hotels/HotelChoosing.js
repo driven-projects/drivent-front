@@ -12,45 +12,50 @@ export default function ChooseHotel() {
 
   const { getTicket } = useTicket();
   const [ticketinfo, setTicketinfo] = useState(false);
+  const [ticketpaid, setTicketpaid] = useState(false);
+
   useEffect(() => {
     getEnroll();
   }, []);
 
   async function getEnroll() {
     const ticketApi = await getTicket();
-    if(ticketApi.TicketType.includesHotel === true) {
-      setTicketinfo(true);
-    }
+    if(ticketApi.TicketType.includesHotel === true) setTicketinfo(true);
+    if(ticketApi.status === 'PAID') setTicketpaid(true);
   }
 
-  if(hotelsLoading || hotelsError || !hotels.length) 
+  if(hotelsLoading || hotelsError || !hotels?.length) 
     return (
       <>
         <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-        {ticketinfo? 
-          <Message>Não há hoteis disponíveis</Message> 
-          : 
-          <HotelTitle>Sua modalidade de ingresso
-            não inclui hospedagem <br/>
-            Prossiga para a escolha de Atividades
-          </HotelTitle> 
-        }
+        <Message>Não há hoteis disponíveis</Message> 
       </>
     );
 
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {ticketinfo? 
-        <>
-          <Message>Primeiro escolha o hotel</Message>
-          <Hotels>
-            {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selectedHotel, setSelectedHotel }} key={index} />)}
-          </Hotels>
-          {(selectedHotel)? <ChooseRoom selectedHotel={selectedHotel} /> : <></>}
-        </> 
-        : 
-        <HotelTitle>oi</HotelTitle> 
+      {(ticketinfo)?
+        ((ticketpaid)?
+          <>
+            <Message>Primeiro escolha o hotel</Message>
+            <Hotels>
+              {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selectedHotel, setSelectedHotel }} key={index} />)}
+            </Hotels>
+            {(selectedHotel)? <ChooseRoom selectedHotel={selectedHotel} /> : <></>}
+          </>
+          : 
+          <HotelTitle>
+            Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem
+          </HotelTitle> 
+        )
+        :
+        (
+          <HotelTitle>
+            Sua modalidade de ingresso não inclui hospedagem <br/>
+            Prossiga para a escolha de Atividades
+          </HotelTitle> 
+        )
       }
     </>
   );

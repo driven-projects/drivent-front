@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useHotelRooms from '../../hooks/api/useHotelRooms';
+import usePostBooking from '../../hooks/api/usePostBooking';
 import Room from './Room';
 
 export default function ChooseRoom({ selectedHotel }) {
-  const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
   const [ selectedRoom, setSelectedRoom ] = useState(null);
+
+  const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
+  const { postBooking } = usePostBooking(selectedRoom);
 
   useEffect(() => {
     getHotelRooms();
@@ -16,14 +19,13 @@ export default function ChooseRoom({ selectedHotel }) {
     rooms = hotelRooms.Rooms;
   }
 
-  console.log(rooms);
-
   return (
     <>
       <Message>Ótima pedida! Agora escolha seu quarto:</Message>
       <Rooms>
         {rooms.map((room, index) => <Room room={room} selected={{ selectedRoom, setSelectedRoom }} key={index}/>)}
-      </Rooms>    
+      </Rooms>
+      {(selectedRoom)? <BookRoomButton onClick={() => postBooking()}>RESERVAR QUARTO</BookRoomButton> : <></>}
     </>
   );
 }
@@ -36,4 +38,14 @@ const Message = styled.p`
 const Rooms = styled.div`
   display: flex;
   flex-wrap: wrap;
+`;
+
+const BookRoomButton = styled.button`
+  width: 182px;
+  height: 37px;
+  background-color: #E0E0E0;
+  border: transparent;
+  border-radius: 4px;
+  margin: 30px 0px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
 `;
