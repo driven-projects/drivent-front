@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import useHotelRooms from '../../hooks/api/useHotelRooms';
+
 export default function HotelCard({ bookinginfo }) {
+  console.log(bookinginfo);
   const id = bookinginfo.Room.hotelId;
   const { getHotelRooms } = useHotelRooms(id);
   const [Hotel, SetHotel] = useState();
@@ -33,8 +35,8 @@ export default function HotelCard({ bookinginfo }) {
         <h5>Quarto Reservado</h5>
         <h5 className='info'>{bookinginfo.Room.name} ({capacityString}) </h5>
         <h5>Pessoas no seu Quarto</h5>
-        {(bookinginfo.people > 1)? 
-          <h5 className='info'>Você e mais {bookinginfo.people - 1}</h5> : 
+        {(bookinginfo.occupants > 1)? 
+          <h5 className='info'>Você e mais {bookinginfo.occupants - 1}</h5> : 
           <h5 className='info'>Você</h5>}
 
       </HotelContainer>
