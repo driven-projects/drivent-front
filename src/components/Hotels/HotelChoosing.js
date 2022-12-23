@@ -17,12 +17,12 @@ export default function ChooseHotel() {
   const [ticketpaid, setTicketpaid] = useState(false);
 
   const { getBookings } = useBooking.useGetBooking();
-  const [bookinginfo, Setbookinginfo] = useState('');
+  const [bookinginfo, Setbookinginfo] = useState(null);
 
   useEffect(() => {
     getEnroll();
     VerifyBooking();
-  }, []);
+  }, [selectedHotel, bookinginfo]);
 
   async function getEnroll() {
     const ticketApi = await getTicket();
@@ -45,31 +45,35 @@ export default function ChooseHotel() {
     );
   }
 
-  if(hotelsLoading || hotelsError || !hotels?.length) {
-    return (
-      <>
-        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-        <Message>Não há hoteis disponíveis</Message> 
-      </>
-    );
-  }
-
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {(ticketinfo)?
         ((ticketpaid)?
-          <>
-            <Message>Primeiro escolha o hotel</Message>
-            <Hotels>
-              {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selectedHotel, setSelectedHotel }} key={index} />)}
-            </Hotels>
-            {(selectedHotel)? <ChooseRoom selectedHotel={selectedHotel} /> : <></>}
-          </>
-          : 
-          <HotelTitle>
-            Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem
-          </HotelTitle> 
+          ((hotelsLoading || hotelsError || !hotels?.length)?
+            (
+              <>
+                <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+                <Message>Não há hoteis disponíveis</Message> 
+              </>
+            )
+            :
+            (
+              <>
+                <Message>Primeiro escolha o hotel</Message>
+                <Hotels>
+                  {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selectedHotel, setSelectedHotel }} key={index} />)}
+                </Hotels>
+                {(selectedHotel)? <ChooseRoom selectedHotel={{ selectedHotel, setSelectedHotel }} set={{ Setbookinginfo }}/> : <></>}
+              </>
+            )
+          )
+          :
+          ( 
+            <HotelTitle>
+              Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem
+            </HotelTitle> 
+          )
         )
         :
         (
