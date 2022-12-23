@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
 export default function Days({ day }) {
+  const date = day?.date.toString().substr(5, 5);
+  const dateMonth = date.slice(0, 2);
+  const dateDay = date.slice(3, 5);
+  
   return (
     <DayStyled>
       <h6>
-        {day?.name}, {day?.date}
+        {day?.weekday}, {dateDay}/{dateMonth}
       </h6>
     </DayStyled>
   );

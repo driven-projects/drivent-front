@@ -1,14 +1,18 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import Days from './Days';
-// import useTicketByUserId from '../../hooks/api/useTicketByUserId';
+import useTicket from '../../hooks/api/useTicket';
+import useActivitiesDays from '../../hooks/api/useActivitiesDays';
 
 export default function PaymentScreen() {
-  // const { userTicket, userTicketLoading, userTicketError } = useTicketByUserId();
+  const { ticket, ticketError, ticketLoading } = useTicket();
+  console.log(ticket);
+  const { activitieDays, activitieDaysLoading, activitieDaysError } = useActivitiesDays();
+  console.log(activitieDays);
   
   //A SER DELETADO E TROCADO PELAS RESPOSTAS DA API  
-  let userTicket = { isRemote: false, status: 'PAID' };
-  const activitiesDays = [
+  let userTicket2 = { isRemote: false, status: 'PAID' };
+  const activitiesDays2 = [
     {
       id: 0,
       name: 'Segunda-feira',
@@ -26,8 +30,8 @@ export default function PaymentScreen() {
     }
   ];
 
-  // if(userTicket.isRemote === true && !userTicketLoading && !userTicketError)
-  if(userTicket.isRemote === true)
+  // if(ticket.TicketType.isRemote === true && !ticketLoading && !ticketError)
+  if(userTicket2.isRemote === true)
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -40,7 +44,8 @@ export default function PaymentScreen() {
       </>
     );
 
-  if(userTicket.status === 'RESERVED')
+  // if(ticket.status === 'RESERVED' && !ticketLoading && !ticketError)
+  if(userTicket2.status === 'RESERVED')
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -53,20 +58,21 @@ export default function PaymentScreen() {
       </>
     );
 
-  return (
-    <>
-      <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
+  if(!activitieDaysLoading || !activitieDaysError || activitieDays?.length)
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
 
-      <StyledTypography variant="h6">
-        Primeiro, filtre pelo dia do evento:
-      </StyledTypography>
+        <StyledTypography variant="h6">
+          Primeiro, filtre pelo dia do evento:
+        </StyledTypography>
 
-      <DaysContainer>
-        {activitiesDays.map((day) => <Days day={ day } />)}
-      </DaysContainer>
-      
-    </>
-  );
+        <DaysContainer>
+          {activitieDays?.map((day) => <Days day={ day } />)}
+        </DaysContainer>
+        
+      </>
+    );
 }
 
 const StyledCenteredText = styled(Typography)`
