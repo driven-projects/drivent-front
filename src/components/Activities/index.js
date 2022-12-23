@@ -3,35 +3,27 @@ import styled from 'styled-components';
 import Days from './Days';
 import useTicket from '../../hooks/api/useTicket';
 import useActivitiesDays from '../../hooks/api/useActivitiesDays';
+import useEnrollment from '../../hooks/api/useEnrollment';
 
 export default function PaymentScreen() {
+  const { enrollment, enrollmentError, enrollmentLoading } = useEnrollment();
   const { ticket, ticketError, ticketLoading } = useTicket();
-  console.log(ticket);
   const { activitieDays, activitieDaysLoading, activitieDaysError } = useActivitiesDays();
-  console.log(activitieDays);
-  
-  //A SER DELETADO E TROCADO PELAS RESPOSTAS DA API  
-  let userTicket2 = { isRemote: false, status: 'PAID' };
-  const activitiesDays2 = [
-    {
-      id: 0,
-      name: 'Segunda-feira',
-      date: '22/10',
-    },
-    {
-      id: 1,
-      name: 'Terça-feira',
-      date: '23/10',
-    },
-    {
-      id: 2,
-      name: 'Quarta-feira',
-      date: '23/10',
-    }
-  ];
 
-  // if(ticket.TicketType.isRemote === true && !ticketLoading && !ticketError)
-  if(userTicket2.isRemote === true)
+  if(!enrollmentLoading || !enrollmentError || enrollment?.length)
+    return(
+      <>
+        <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
+
+        <StyledCenteredText>
+          <StyledTypography variant='h6'>
+          Você precisa completar sua incrição antes de prosseguir para escolha de atividades.
+          </StyledTypography>
+        </StyledCenteredText>
+      </>
+    );
+
+  if(ticket.TicketType.isRemote === true && !ticketLoading && !ticketError)
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -44,8 +36,7 @@ export default function PaymentScreen() {
       </>
     );
 
-  // if(ticket.status === 'RESERVED' && !ticketLoading && !ticketError)
-  if(userTicket2.status === 'RESERVED')
+  if(ticket.status === 'RESERVED' && !ticketLoading && !ticketError)
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -70,7 +61,6 @@ export default function PaymentScreen() {
         <DaysContainer>
           {activitieDays?.map((day) => <Days day={ day } />)}
         </DaysContainer>
-        
       </>
     );
 }
