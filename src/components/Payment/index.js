@@ -1,27 +1,27 @@
 import { useEffect, useState } from 'react';
+import SelectingTicketType from './SelectingTicketType/index';
+import useEnrollment from '../../hooks/api/useEnrollment';
+import { GreenVerifyer } from './greenVerifyer';
+import useTicket from '../../hooks/api/useTicket';
+import TicketChoosed from './PaymentTicket/TicketChoosed';
 import {
-  ColumRow, Row, Title,
-  SectionTitle, StyledDiv,
-  InfoTitle, ChoosedTicket,
+  ColumRow,
+  Row,
+  Title,
+  StyledDiv,
+  InfoTitle,
   EnrollTitle
 } from './section';
 
-import SelectingTicketType from './SelectingTicketType/index';
-import usePayment from '../../hooks/api/usePayment';
-import useEnrollment from '../../hooks/api/useEnrollment';
-import { CreditCard } from './creditCard';
-import { GreenVerifyer } from './greenVerifyer';
-import useTicketByUserId from '../../hooks/api/useTicketByUserId';
-
 export function PaymentPage() {
-  const [Paid, SetPaid] = useState('');
+  const [Paid, SetPaid] = useState(false);
   const [Enroll, SetEnroll
   ] = useState('');
 
-  const { getTicket } = usePayment();
   const { getEnrollment } = useEnrollment();
+  const { getTicket } = useTicket();
 
-  const { userTicket } = useTicketByUserId();
+  const { ticket, ticketError, ticketLoading } = useTicket();
 
   useEffect(() => {
     GetPayment();
@@ -32,6 +32,7 @@ export function PaymentPage() {
     const enrollapi = await getEnrollment();
     SetEnroll(enrollapi.name); 
   }
+
   async function GetPayment() {
     const payment = await getTicket();
     if(payment.status === 'PAID') {
@@ -49,20 +50,11 @@ export function PaymentPage() {
                 <Row>
                   <Title>Ingresso e pagamento</Title>
                 </Row>
-                <SectionTitle>
-              Ingresso escolhido 
-                </SectionTitle>
-                <ChoosedTicket>
-                  <p className='Title'>Presencial + Com Hotel</p>
-                  <p className='Price'>R$ 600</p>
-                </ChoosedTicket>
+                <TicketChoosed ticket={ ticket } ticketError={ ticketError } ticketLoading={ ticketLoading }/>
               </>:  
-              <SelectingTicketType/>}
+              <SelectingTicketType Paid={ Paid } SetPaid={ SetPaid }/>}
           </Row>
           <Row>
-            <SectionTitle>
-              Pagamento
-            </SectionTitle>
             {Paid? 
               <InfoTitle>
                 <ColumRow>  
@@ -73,7 +65,7 @@ export function PaymentPage() {
                   </Row>
                 </ColumRow>
               </InfoTitle> : 
-              <CreditCard></CreditCard>
+              <></>
             }
           </Row>
         </> 
