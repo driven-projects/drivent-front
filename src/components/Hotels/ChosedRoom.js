@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import useHotelRooms from '../../hooks/api/useHotelRooms';
 
 export default function HotelCard({ bookinginfo }) {
-  console.log(bookinginfo);
   const id = bookinginfo.Room.hotelId;
   const { getHotelRooms } = useHotelRooms(id);
   const [Hotel, SetHotel] = useState();
