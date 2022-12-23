@@ -10,7 +10,7 @@ export default function PaymentScreen() {
   const { ticket, ticketError, ticketLoading } = useTicket();
   const { activitieDays, activitieDaysLoading, activitieDaysError } = useActivitiesDays();
 
-  if(!enrollmentLoading || !enrollmentError || enrollment?.length)
+  if(enrollmentLoading || enrollmentError || enrollment?.length)
     return(
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -23,7 +23,7 @@ export default function PaymentScreen() {
       </>
     );
 
-  if(ticket.TicketType.isRemote === true && !ticketLoading && !ticketError)
+  if(ticket?.TicketType.isRemote === true && !ticketLoading && !ticketError)
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
@@ -36,7 +36,7 @@ export default function PaymentScreen() {
       </>
     );
 
-  if(ticket.status === 'RESERVED' && !ticketLoading && !ticketError)
+  if(ticket?.status === 'RESERVED' && !ticketLoading && !ticketError)
     return (
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
