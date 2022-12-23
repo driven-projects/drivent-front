@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useHotelRooms from '../../hooks/api/useHotelRooms';
-import usePostBooking from '../../hooks/api/usePostBooking';
+import * as useBooking from '../../hooks/api/useBooking';
 import Room from './Room';
 
 export default function ChooseRoom({ selectedHotel }) {
   const [ selectedRoom, setSelectedRoom ] = useState(null);
 
   const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
-  const { postBooking } = usePostBooking(selectedRoom);
+  const { postBooking } = useBooking.usePostBooking(selectedRoom);
 
   useEffect(() => {
     getHotelRooms();

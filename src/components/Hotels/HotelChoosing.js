@@ -1,10 +1,12 @@
 import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
+import useTicket from '../../hooks/api/useTicket';
+import * as useBooking from '../../hooks/api/useBooking';
 import styled from 'styled-components';
 import useHotels from '../../hooks/api/useHotels';
 import Hotel from './Hotel';
 import ChooseRoom from './RoomsChoosing';
-import useTicket from '../../hooks/api/useTicket';
+import HotelCard from './ChosedRoom';
 
 export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
@@ -14,8 +16,12 @@ export default function ChooseHotel() {
   const [ticketinfo, setTicketinfo] = useState(false);
   const [ticketpaid, setTicketpaid] = useState(false);
 
+  const { getBookings } = useBooking.useGetBooking();
+  const [bookinginfo, Setbookinginfo] = useState('');
+
   useEffect(() => {
     getEnroll();
+    VerifyBooking();
   }, []);
 
   async function getEnroll() {
@@ -24,13 +30,29 @@ export default function ChooseHotel() {
     if(ticketApi.status === 'PAID') setTicketpaid(true);
   }
 
-  if(hotelsLoading || hotelsError || !hotels?.length) 
+  async function VerifyBooking() {
+    const bookingApi = await getBookings();
+    if(bookingApi)  Setbookinginfo(bookingApi);
+  }
+
+  if(bookinginfo) {
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+        <Message>Você já escolheu seu quarto:</Message> 
+        <HotelCard bookinginfo = {bookinginfo}/>
+      </>
+    );
+  }
+
+  if(hotelsLoading || hotelsError || !hotels?.length) {
     return (
       <>
         <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
         <Message>Não há hoteis disponíveis</Message> 
       </>
     );
+  }
 
   return (
     <>
