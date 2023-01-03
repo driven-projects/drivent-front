@@ -5,14 +5,12 @@ import useTicket from '../../hooks/api/useTicket';
 import useActivitiesDays from '../../hooks/api/useActivitiesDays';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import { useState } from 'react';
+import SpacesContainer from './SpaceContainer';
 
 export default function PaymentScreen() {
   const { enrollment, enrollmentError, enrollmentLoading } = useEnrollment();
-  console.log(enrollment);
   const { ticket, ticketError, ticketLoading } = useTicket();
-  console.log(ticket);
   const { activitieDays, activitieDaysLoading, activitieDaysError } = useActivitiesDays();
-  console.log(activitieDays);
 
   const [selectedDay, setSelectedDay] = useState(null);
 
@@ -60,13 +58,17 @@ export default function PaymentScreen() {
       <>
         <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
 
-        <StyledTypography variant="h6">
-          Primeiro, filtre pelo dia do evento:
-        </StyledTypography>
+        {(selectedDay)? <></> : 
+          <StyledTypography variant="h6">
+            Primeiro, filtre pelo dia do evento:
+          </StyledTypography>
+        }
 
         <DaysContainer>
           {activitieDays?.map((day) => <Days day={ day } selected={{ selectedDay, setSelectedDay }}/>)}
         </DaysContainer>
+
+        {(selectedDay)? <SpacesContainer /> : <></>}
       </>
     );
 }
@@ -86,4 +88,5 @@ const StyledTypography = styled(Typography)`
 
 const DaysContainer = styled(Typography)`
   display: flex;
+  padding-bottom: 40px;
 `;
