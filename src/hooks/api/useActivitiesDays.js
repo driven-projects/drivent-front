@@ -1,7 +1,7 @@
 import useAsync from '../useAsync';
 import useToken from '../useToken';
 
-import * as activitiesDaysApi from '../../services/activitiesDaysApi';
+import * as activitiesDaysApi from '../../services/activitiesApi';
 
 export default function useActivitiesDays() {
   const token = useToken();

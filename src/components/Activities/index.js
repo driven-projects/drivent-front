@@ -1,18 +1,23 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
+import { useState } from 'react';
+
 import Days from './Days';
+import SpacesContainer from './SpaceContainer';
+
+import useEnrollment from '../../hooks/api/useEnrollment';
 import useTicket from '../../hooks/api/useTicket';
 import useActivitiesDays from '../../hooks/api/useActivitiesDays';
-import useEnrollment from '../../hooks/api/useEnrollment';
-import { useState } from 'react';
-import SpacesContainer from './SpaceContainer';
+import useActivitiesSpace from '../../hooks/api/useActivitiesSpace';
 
 export default function PaymentScreen() {
   const { enrollment, enrollmentError, enrollmentLoading } = useEnrollment();
   const { ticket, ticketError, ticketLoading } = useTicket();
   const { activitieDays, activitieDaysLoading, activitieDaysError } = useActivitiesDays();
+  const { activitieSpace } = useActivitiesSpace();
 
   const [selectedDay, setSelectedDay] = useState(null);
+  console.log(selectedDay);
 
   if(enrollmentLoading || enrollmentError || enrollment === null)
     return(
@@ -68,7 +73,8 @@ export default function PaymentScreen() {
           {activitieDays?.map((day) => <Days day={ day } selected={{ selectedDay, setSelectedDay }}/>)}
         </DaysContainer>
 
-        {(selectedDay)? <SpacesContainer /> : <></>}
+        {/* {(selectedDay)? <SpacesContainer /> : <></>} */}
+        {(selectedDay)? <SpaceContainerStyle>{activitieSpace?.map((space) => <SpacesContainer containerInfo={{ space, selectedDay }} />)}</SpaceContainerStyle> : <></>}
       </>
     );
 }
@@ -89,4 +95,8 @@ const StyledTypography = styled(Typography)`
 const DaysContainer = styled(Typography)`
   display: flex;
   padding-bottom: 40px;
+`;
+
+const SpaceContainerStyle = styled(Typography)`
+  display: flex;
 `;

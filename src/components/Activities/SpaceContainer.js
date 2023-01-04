@@ -1,20 +1,18 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
-export default function SpacesContainer() {
-  const activiesDuration = 2;
+import ActivitieContainer from './ActivitieContainer';
+
+export default function SpacesContainer({ containerInfo }) {
+  console.log(containerInfo);
   return (
     <SpacesContainerStyle>
       <SpaceStyle>
-        Nome do Espaço
+        {containerInfo.space.name}
         <SpaceActivities>
-          <ActivitieStyle duration={activiesDuration}>
-            Corte e Costura
-          </ActivitieStyle>
           
-          <ActivitieStyle>
-            Crochet com Zezé
-          </ActivitieStyle>
+          <ActivitieContainer activitieInfo={ containerInfo } />
+
         </SpaceActivities>
       </SpaceStyle>
     </SpacesContainerStyle>
@@ -41,13 +39,4 @@ const SpaceActivities = styled(Typography)`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ActivitieStyle = styled(Typography)`
-  min-height: 80px;
-  height: ${props => props.duration * 80}px;
-  width: 265px;
-  margin-top: 10px!important;
-  background: #F1F1F1;
-  border-radius: 5px;
 `;
