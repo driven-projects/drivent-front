@@ -10,19 +10,21 @@ import HotelCard from './ChosedRoom';
 
 export default function ChooseHotel() {
   const { hotels, hotelsError, hotelsLoading } = useHotels();
-  const [ selectedHotel, setSelectedHotel ] = useState(null);
 
   const { getTicket } = useTicket();
-  const [ticketinfo, setTicketinfo] = useState(false);
-  const [ticketpaid, setTicketpaid] = useState(false);
+  const [ ticketinfo, setTicketinfo ] = useState(false);
+  const [ ticketpaid, setTicketpaid ] = useState(false);
 
   const { getBookings } = useBooking.useGetBooking();
-  const [bookinginfo, Setbookinginfo] = useState(null);
+  const [ bookinginfo, setBookinginfo ] = useState(null);
+
+  const [ selectedHotel, setSelectedHotel ] = useState(null);
+  const [ roomswap, setRoomswap ] = useState(false);
 
   useEffect(() => {
     getEnroll();
     VerifyBooking();
-  }, [selectedHotel, bookinginfo]);
+  }, [ bookinginfo ]);
 
   async function getEnroll() {
     const ticketApi = await getTicket();
@@ -32,15 +34,16 @@ export default function ChooseHotel() {
 
   async function VerifyBooking() {
     const bookingApi = await getBookings();
-    if(bookingApi)  Setbookinginfo(bookingApi);
+    if(bookingApi) setBookinginfo(bookingApi);
   }
 
-  if(bookinginfo) {
+  if(bookinginfo && !roomswap) {
     return (
       <>
         <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
         <Message>Você já escolheu seu quarto:</Message> 
         <HotelCard bookinginfo = {bookinginfo}/>
+        <BookRoomButton onClick={() => { setRoomswap(true); }}>TROCAR DE QUARTO</BookRoomButton>
       </>
     );
   }
@@ -64,7 +67,11 @@ export default function ChooseHotel() {
                 <Hotels>
                   {hotels.map((hotel, index) => <Hotel hotel={hotel} selected={{ selectedHotel, setSelectedHotel }} key={index} />)}
                 </Hotels>
-                {(selectedHotel)? <ChooseRoom selectedHotel={{ selectedHotel, setSelectedHotel }} set={{ Setbookinginfo }}/> : <></>}
+                {(selectedHotel)?
+                  <ChooseRoom hotel={{ selectedHotel, setSelectedHotel }} booking={{ bookinginfo, setBookinginfo, roomswap, setRoomswap }}/>
+                  :
+                  <></>
+                }
               </>
             )
           )
@@ -119,4 +126,14 @@ const HotelTitle = styled.div`
   width: 50%;
   margin-left:25%;
   margin-top:30%;
+`;
+
+const BookRoomButton = styled.button`
+  width: 182px;
+  height: 37px;
+  background-color: #E0E0E0;
+  border: transparent;
+  border-radius: 4px;
+  margin: 30px 0px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
 `;
