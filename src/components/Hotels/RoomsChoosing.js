@@ -6,30 +6,39 @@ import Room from './Room';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-export default function ChooseRoom({ set: { Setbookinginfo }, selectedHotel: { selectedHotel, setSelectedHotel } }) {
-  const [ selectedRoom, setSelectedRoom ] = useState(null);
-
-  const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
-  const { postBooking } = useBooking.usePostBooking(selectedRoom);
-
+export default function ChooseRoom({ booking: { bookinginfo, setBookinginfo, roomswap, setRoomswap  }, hotel: { selectedHotel, setSelectedHotel } }) {
   const navigate = useNavigate();
+  const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
+  const { postBooking, postBookingError } = useBooking.usePostBooking();
+  const { updateBooking, updateBookingError } = useBooking.useUpdateBooking();
+
+  const [ selectedRoom, setSelectedRoom ] = useState(null);
 
   useEffect(() => {
     getHotelRooms();
-  }, [selectedHotel]);
- 
+  }, [ selectedHotel ]);
+
   let rooms = [];
   if(!hotelRoomsError && !hotelRoomsLoading ) {
     rooms = hotelRooms.Rooms;
   }
 
   function confirmRoom() {
-    postBooking();
+    if(!roomswap) {
+      postBooking(selectedRoom);
+    } else {
+      updateBooking(bookinginfo.id, selectedRoom);
+    }
     setSelectedRoom(null);
     setSelectedHotel(null);
-    Setbookinginfo(null);
-    toast('Ticket reservado com sucesso!');
-    navigate('/dashboard/activities');
+    setBookinginfo(null);
+    setRoomswap(false);
+    if(postBookingError || updateBookingError) {
+      toast('Reserva falhou!');
+    } else {
+      toast('Ticket reservado com sucesso!');
+      navigate('/dashboard/activities');
+    }
   }
 
   return (
@@ -38,7 +47,11 @@ export default function ChooseRoom({ set: { Setbookinginfo }, selectedHotel: { s
       <Rooms>
         {rooms.map((room, index) => <Room room={room} selected={{ selectedRoom, setSelectedRoom }} key={index}/>)}
       </Rooms>
-      {(selectedRoom)? <BookRoomButton onClick={() => confirmRoom()}>RESERVAR QUARTO</BookRoomButton> : <></>}
+      {(selectedRoom)?
+        <BookRoomButton onClick={() => confirmRoom()}>{(roomswap)? 'TROCAR RESERVA' : 'RESERVAR QUARTO'}</BookRoomButton>
+        :
+        <></>
+      }
     </>
   );
 }

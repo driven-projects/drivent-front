@@ -8,11 +8,8 @@ import { useState } from 'react';
 
 export default function PaymentScreen() {
   const { enrollment, enrollmentError, enrollmentLoading } = useEnrollment();
-  console.log(enrollment);
   const { ticket, ticketError, ticketLoading } = useTicket();
-  console.log(ticket);
   const { activitieDays, activitieDaysLoading, activitieDaysError } = useActivitiesDays();
-  console.log(activitieDays);
 
   const [selectedDay, setSelectedDay] = useState(null);
 
