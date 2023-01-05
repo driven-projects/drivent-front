@@ -4,21 +4,19 @@ import styled from 'styled-components';
 
 import { RxEnter, RxCrossCircled } from 'react-icons/rx';
 
-export default function ActivitieContainer({ activities }) {
+export default function ActivitieContainer({ activitiesInfo }) {
   const [isItFull, setIsItFull] = useState(true);
 
-  const activiesDuration = 2;
-
   return (
-    <ActivitieStyle duration={activiesDuration}>
+    <ActivitieStyle duration={activitiesInfo.duration}>
       <ActivitieInfoBox>
 
         <ActivitieName>
-          Corte e Costura
+          {activitiesInfo.name}
         </ActivitieName>
 
         <ActivitieHour>
-          09:00 - 10:00
+          {activitiesInfo.start}:00 - {activitiesInfo.start + activitiesInfo.duration}:00
         </ActivitieHour>
 
       </ActivitieInfoBox>
@@ -26,7 +24,7 @@ export default function ActivitieContainer({ activities }) {
       <ActivitieVacancyBox isItFull={isItFull}>
         {isItFull? <RxEnter /> : <RxCrossCircled />}
         <ActivitieStatus>
-            27 vagas
+          {isItFull? <>{activitiesInfo.capacity} vagas</> : <>Esgotado</>}
         </ActivitieStatus>
       </ActivitieVacancyBox>
     </ActivitieStyle>

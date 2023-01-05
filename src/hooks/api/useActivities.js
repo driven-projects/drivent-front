@@ -6,15 +6,17 @@ import * as activitiesApi from '../../services/activitiesApi';
 export default function useActivities(dateId, spaceId) {
   const token = useToken();
   const {
-    data: activites,
-    loading: activitesLoading,
+    data: activities,
+    loading: activitiesLoading,
     error: activitiesError,
+    act: getActivities,
   } = useAsync (() => activitiesApi.getActivities({ token, dateId, spaceId }));
 
-  console.log(activites);
+  console.log(activities);
   return {
-    activites,
-    activitesLoading,
+    activities,
+    activitiesLoading,
     activitiesError,
+    getActivities,
   };
 }

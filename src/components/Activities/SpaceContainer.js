@@ -3,16 +3,17 @@ import styled from 'styled-components';
 
 import ActivitieContainer from './ActivitieContainer';
 import useActivities from '../../hooks/api/useActivities';
+import { useEffect } from 'react';
 
 export default function SpacesContainer({ containerInfo }) {
   const dateId = containerInfo.selectedDay;
   const spaceId = containerInfo.space.id;
-  const { activities, activitiesLoading, activitiesError } = useActivities(dateId, spaceId);
-  
-  if(!activitiesError && !activitiesLoading) {
-    console.log(activities);
-  }
-  
+  const { activities, activitiesLoading, activitiesError, getActivities } = useActivities(dateId, spaceId);
+
+  useEffect(() => {
+    getActivities(dateId, spaceId);
+  }, [dateId, spaceId]);
+
   if (activitiesLoading)
     return (
       <SpacesContainerStyle>
@@ -44,7 +45,7 @@ export default function SpacesContainer({ containerInfo }) {
           {containerInfo.space.name}
           <SpaceActivities>
             
-            <ActivitieContainer activitieInfo={ activities } />
+            {activities?.map((activitiesInfo) => <ActivitieContainer activitiesInfo={ activitiesInfo } />)}
 
           </SpaceActivities>
         </SpaceStyle>
