@@ -4,10 +4,8 @@ import useHotelRooms from '../../hooks/api/useHotelRooms';
 import * as useBooking from '../../hooks/api/useBooking';
 import Room from './Room';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 export default function ChooseRoom({ booking: { bookinginfo, setBookinginfo, roomswap, setRoomswap  }, hotel: { selectedHotel, setSelectedHotel } }) {
-  const navigate = useNavigate();
   const { hotelRooms, hotelRoomsError, hotelRoomsLoading, getHotelRooms } = useHotelRooms(selectedHotel);
   const { postBooking, postBookingError } = useBooking.usePostBooking();
   const { updateBooking, updateBookingError } = useBooking.useUpdateBooking();
@@ -24,10 +22,15 @@ export default function ChooseRoom({ booking: { bookinginfo, setBookinginfo, roo
   }
 
   function confirmRoom() {
+    if(roomswap && bookinginfo?.roomId === selectedRoom) {
+      toast('Você já tem uma reserva nesse quarto!');
+      return;
+    }
+
     if(!roomswap) {
       postBooking(selectedRoom);
     } else {
-      updateBooking(bookinginfo.id, selectedRoom);
+      updateBooking(bookinginfo?.id, selectedRoom);
     }
     setSelectedRoom(null);
     setSelectedHotel(null);
@@ -37,8 +40,8 @@ export default function ChooseRoom({ booking: { bookinginfo, setBookinginfo, roo
       toast('Reserva falhou!');
     } else {
       toast('Ticket reservado com sucesso!');
-      navigate('/dashboard/activities');
     }
+    return;
   }
 
   return (

@@ -24,7 +24,7 @@ export default function ChooseHotel() {
   useEffect(() => {
     getEnroll();
     VerifyBooking();
-  }, []);
+  }, [ bookinginfo ]);
 
   async function getEnroll() {
     const ticketApi = await getTicket();
