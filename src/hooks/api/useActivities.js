@@ -12,7 +12,6 @@ export default function useActivities(dateId, spaceId) {
     act: getActivities,
   } = useAsync (() => activitiesApi.getActivities({ token, dateId, spaceId }));
 
-  console.log(activities);
   return {
     activities,
     activitiesLoading,
