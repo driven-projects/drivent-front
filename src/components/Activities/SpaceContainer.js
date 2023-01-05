@@ -2,21 +2,54 @@ import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 import ActivitieContainer from './ActivitieContainer';
+import useActivities from '../../hooks/api/useActivities';
 
 export default function SpacesContainer({ containerInfo }) {
-  console.log(containerInfo);
-  return (
-    <SpacesContainerStyle>
-      <SpaceStyle>
-        {containerInfo.space.name}
-        <SpaceActivities>
-          
-          <ActivitieContainer activitieInfo={ containerInfo } />
+  const dateId = containerInfo.selectedDay;
+  const spaceId = containerInfo.space.id;
+  const { activities, activitiesLoading, activitiesError } = useActivities(dateId, spaceId);
+  
+  if(!activitiesError && !activitiesLoading) {
+    console.log(activities);
+  }
+  
+  if (activitiesLoading)
+    return (
+      <SpacesContainerStyle>
+        <SpaceStyle>
+          {containerInfo.space.name}
+          <SpaceActivities>
+            Carregando atividades...
+          </SpaceActivities>
+        </SpaceStyle>
+      </SpacesContainerStyle>
+    );
 
-        </SpaceActivities>
-      </SpaceStyle>
-    </SpacesContainerStyle>
-  );
+  if (activitiesError)
+    return (
+      <SpacesContainerStyle>
+        <SpaceStyle>
+          {containerInfo.space.name}
+          <SpaceActivities>
+            Erro ao carregar atividades...
+          </SpaceActivities>
+        </SpaceStyle>
+      </SpacesContainerStyle>
+    );
+
+  if (!activitiesError || !activitiesLoading)
+    return (
+      <SpacesContainerStyle>
+        <SpaceStyle>
+          {containerInfo.space.name}
+          <SpaceActivities>
+            
+            <ActivitieContainer activitieInfo={ activities } />
+
+          </SpaceActivities>
+        </SpaceStyle>
+      </SpacesContainerStyle>
+    );
 }
 
 const SpacesContainerStyle = styled(Typography)`

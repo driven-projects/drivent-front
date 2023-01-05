@@ -4,9 +4,11 @@ import styled from 'styled-components';
 
 import { RxEnter, RxCrossCircled } from 'react-icons/rx';
 
-export default function ActivitieContainer() {
+export default function ActivitieContainer({ activities }) {
   const [isItFull, setIsItFull] = useState(true);
+
   const activiesDuration = 2;
+
   return (
     <ActivitieStyle duration={activiesDuration}>
       <ActivitieInfoBox>
@@ -51,10 +53,6 @@ const ActivitieInfoBox = styled(Typography)`
   width: 200px;
   height: 100%;
   border-right: 1px solid #CFCFCF;
-`;
-
-const ActivitieBar = styled(Typography)`
-  
 `;
 
 const ActivitieVacancyBox = styled(Typography)`

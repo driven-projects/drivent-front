@@ -1,7 +1,7 @@
 import useAsync from '../useAsync';
 import useToken from '../useToken';
 
-import * as activitiesDaysApi from '../../services/activitiesApi';
+import * as activitiesApi from '../../services/activitiesApi';
 
 export default function useActivitiesSpace() {
   const token = useToken();
@@ -9,7 +9,7 @@ export default function useActivitiesSpace() {
     data: activitieSpace,
     loading: activitieSpaceLoading,
     error: activitieSpaceError,
-  } = useAsync(() => activitiesDaysApi.getActivitiesSpace(token));
+  } = useAsync(() => activitiesApi.getActivitiesSpace(token));
 
   return {
     activitieSpace,

@@ -17,3 +17,12 @@ export async function getActivitiesSpace(token) {
   });
   return response.data;
 }
+
+export async function getActivities({ token, dateId, spaceId }) {
+  const response = await api.get(`/activities/${dateId}/${spaceId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}

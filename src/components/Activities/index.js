@@ -17,7 +17,6 @@ export default function PaymentScreen() {
   const { activitieSpace } = useActivitiesSpace();
 
   const [selectedDay, setSelectedDay] = useState(null);
-  console.log(selectedDay);
 
   if(enrollmentLoading || enrollmentError || enrollment === null)
     return(
@@ -73,7 +72,6 @@ export default function PaymentScreen() {
           {activitieDays?.map((day) => <Days day={ day } selected={{ selectedDay, setSelectedDay }}/>)}
         </DaysContainer>
 
-        {/* {(selectedDay)? <SpacesContainer /> : <></>} */}
         {(selectedDay)? <SpaceContainerStyle>{activitieSpace?.map((space) => <SpacesContainer containerInfo={{ space, selectedDay }} />)}</SpaceContainerStyle> : <></>}
       </>
     );
